@@ -1,4 +1,4 @@
-baseURL = "https://mitark.github.io/tutorial-lesson-simulate-dataset-infomaniak/"
+baseURL = "https://cms-opendata-workshop.github.io/tutorial-lesson-simulate-dataset-infomaniak/"
 title = "Example Lesson"
 languageCode = "en-us"
 enableGitInfo = true
@@ -40,7 +40,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
   tagline = "A thin downstream lesson built on the shared hugo-styles module."
   description = "Replace this metadata with your own tutorial details."
   contact = "team@example.org"
-  repo = "https://github.com/mitark/tutorial-lesson-simulate-dataset-infomaniak"
+  repo = "https://github.com/cms-opendata-workshop/tutorial-lesson-simulate-dataset-infomaniak"
   docsRepo = "https://github.com/oer-particle-physics/hugo-styles-template"
   editBranch = "main"
   copyrightHolder = "the authors"
@@ -147,7 +147,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
       type = "search"
   [[menus.main]]
     name = "GitHub"
-    url = "https://github.com/mitark/tutorial-lesson-simulate-dataset-infomaniak"
+    url = "https://github.com/cms-opendata-workshop/tutorial-lesson-simulate-dataset-infomaniak"
     weight = 90
     [menus.main.params]
       icon = "github"
