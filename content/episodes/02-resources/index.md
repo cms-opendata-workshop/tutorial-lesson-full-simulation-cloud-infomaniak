@@ -1,10 +1,10 @@
 +++
 title = "Resources"
 weight = 20
-teaching = 15 # To-do
-exercise = 10 # To-do
+teaching = 15
+exercise = 10
 questions = ["How much resources does my cluster need to have?", "How much will the resources cost?"]
-objectives = [""]
+objectives = ["Mock objective"]
 keypoints = ["The resources needed for your workflow depend on the number of events and how fast you want your results."]
 +++
 
