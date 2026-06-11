@@ -1,6 +1,6 @@
 +++
 title = "02 Resources"
-weight = 10
+weight = 20
 teaching = 15
 exercises = 10
 questions = ["How much resources does my cluster need to have?", "How much will the resources cost?"]
