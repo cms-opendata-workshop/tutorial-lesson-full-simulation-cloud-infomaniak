@@ -3,9 +3,9 @@ title = "Introduction"
 weight = 10
 teaching = 10
 exercises = 10
-questions = ["What does this workflow do?", "How to get started on this workflow?"]
+questions = ["What does this workflow do?"]
 objectives = ["Understand what the workflow does and who is it for."]
-keypoints = ["This workflow starts from fragments and processes data using the CMS software and produces a simulated dataset in either NANOAOD format or for HeavyIons the RECO format."]
+keypoints = ["With this workflow you can create a simulated dataset.", "Because the data processing requires a lot of resources, here we use public cloud resources."]
 +++
 
 # About the workflow
@@ -20,52 +20,48 @@ Data processing can, in theory, be done with
 - Local resources i.e. your own computer
 - Public resources
 
-This tutorial shows how to create a simulated dataset without access to the two former and only using the latter. Infomaniak is an affordable Switzerland based cloud provider, whose resources we will be using throughout this tutorial.
+This tutorial shows how to create a simulated dataset without access to private resources and only using the public cloud resources. Infomaniak is an affordable Switzerland based cloud provider, whose resources we will be using throughout this tutorial.
 
-# Getting started
+# Full Simulation Workflow
 
 ### Prerequisites
 
-To get an Infomaniak Kubernetes cluster and Argo setup on it, follow [this tutorial](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/)
+To get an Infomaniak Kubernetes cluster and Argo setup on it, follow this [Setup tutorial](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/)
 
-### 1. Kubernetes and Argo
+### Workflow steps
 
-Once you have created a cluster on the Infomaniak Dashboard and it is up and running, you can download the Kubeconfig file to your computer. Move the config to your working directory and set it to your environment variables:
+#### Proton-proton simulation
 
-```bash
-export KUBECONFIG=/path/to/your/pck-xxx-kubeconfig
+Proton-proton simulation follows such steps:
+
+```mermaid
+flowchart TD
+    A[Define params] --> B[Divide jobs]
+    B --> C[GEN]
+    C --> D[SIM]
+    D --> E[DIGI2RAW]
+    E --> F[HLT]
+    F --> G[RECO]
+    G --> H[NANO]
+    H --> I[Analysis]
+    L --> K[End]
 ```
 
-Check the connection to the cluster
+This workflow is completed by running the `run-pp-simulation.yaml` file. More on that in the next chapter.
 
-```bash
-kubectl cluster-info
+#### Heavy ion simulation
 
-Kubernetes control plane is running at https://83.xxxx
-CoreDNS is running at https://83.xx:xxxx/api/v1/namespaces/kube-system/services/pck-yxulp7c-addon-coredns:udp-53/proxy
+Heavy ion simulation, on the other hand, is completed as such:
 
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```mermaid
+flowchart TD
+    A[Define params] --> B[Divide jobs]
+    B --> C[GEN-SIM]
+    C --> D[HLT-RECO]
+    D --> E[End]
 ```
 
-Next apply the argo tools:
-
-```bash
-kubectl create namespace argo
-kubectl apply -n argo --server-side -f https://github.com/argoproj/argo-workflows/releases/download/v4.0.1/install.yaml
-kubectl apply -f manifests/
-```
-
-### 2. Clone the workflow
-
-Clone the workflow repository on your computer using:
-
-```bash
-git clone git@github.com:cms-opendata-processing-tasks/FullSimulationArgoWorkflow.git
-```
-
-- clone the repo
-
-- get fragments
+Heavy ion simulation is in the file `run-heavy-ion-simulation.yaml`. Running the .yaml files is done in chapter xx.
 
 ## 1. Run setup checks first
 
@@ -110,38 +106,3 @@ The included workflow deploys on pushes to `main`, so that first push should alr
 Do not remove the `module.imports` block that points to `github.com/oer-particle-physics/hugo-styles`.
 That import is what provides the shared layouts, shortcodes, and supporting behavior.
 {{< /callout >}}
-
-## 3. Replace template content with your lesson
-
-After metadata is set:
-
-- replace this sample episode with your first real episode
-- set episode order with front matter `weight` values (`10`, `20`, `30`, ...) rather than filename prefixes
-- update `content/_index.md` homepage copy
-- add or rename glossary/profile pages if needed
-
-For structure and conventions, use:
-
-- [Authoring Guide](https://oer-particle-physics.github.io/hugo-styles/docs/authoring/)
-- [Components](https://oer-particle-physics.github.io/hugo-styles/docs/components/)
-- [Front Matter](https://oer-particle-physics.github.io/hugo-styles/docs/frontmatter/)
-- [Hextra Features for Physics Lessons](https://oer-particle-physics.github.io/hugo-styles/docs/hextra-features/)
-- [Deployment](https://oer-particle-physics.github.io/hugo-styles/docs/deployment/)
-
-{{< challenge title="Local vs shared" >}}
-List two things that should stay in this lesson repository and two things that should stay in the shared module.
-
-{{< hint >}}
-Think about what is specific to your lesson topic versus what should stay reusable across many lessons.
-{{< /hint >}}
-
-{{< solution >}}
-Lesson prose, schedule, glossary/profile content, and local branding should stay in this repository.
-Shared layouts, pedagogy shortcodes, CSS/JS behavior, and validation tooling should stay upstream in `hugo-styles`.
-{{< /solution >}}
-{{< /challenge >}}
-
-{{< instructor >}}
-Point maintainers to the update guide early so they know updates should arrive through module version bumps:
-[Updating Downstream Lessons](https://oer-particle-physics.github.io/hugo-styles/docs/updates/).
-{{< /instructor >}}
