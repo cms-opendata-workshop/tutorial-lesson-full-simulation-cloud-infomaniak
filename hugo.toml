@@ -1,5 +1,5 @@
 baseURL = "https://cms-opendata-workshop.github.io/tutorial-lesson-full-simulation-cloud-infomaniak/"
-title = "Example Lesson"
+title = "Simulation Workflow Tutorial"
 languageCode = "en-us"
 enableGitInfo = true
 disableKinds = ["taxonomy", "term", "RSS"]
