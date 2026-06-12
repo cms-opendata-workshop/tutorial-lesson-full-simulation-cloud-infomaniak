@@ -13,37 +13,49 @@ Go is only needed if you maintain module updates locally
 
 {{< tabs >}}
 {{< tab name="macOS" selected=true >}}
+
 ```bash
 brew install hugo
 ```
+
 {{< /tab >}}
 {{< tab name="Linux" >}}
+
 ```bash
 sudo apt install hugo
 ```
+
 {{< /tab >}}
 {{< tab name="Windows" >}}
+
 ```powershell
 winget install Hugo.Hugo.Extended
 ```
+
 {{< /tab >}}
 {{< /tabs >}}
 
 {{< tabs >}}
 {{< tab name="bash" selected=true >}}
+
 ```bash
 hugo version
 ```
+
 {{< /tab >}}
 {{< tab name="zsh" >}}
+
 ```zsh
 hugo version
 ```
+
 {{< /tab >}}
 {{< tab name="fish" >}}
+
 ```fish
 hugo version
 ```
+
 {{< /tab >}}
 {{< /tabs >}}
 
@@ -52,5 +64,5 @@ If you plan to update `_vendor/` locally, install Go and verify with `go version
 ## Next step
 
 Once `hugo version` and `hugo server` work, return to
-[Getting started]({{< relref "/episodes/01-getting-started" >}})
+[Introduction]({{< relref "/episodes/01-introduction" >}})
 and continue with step 2: update `hugo.toml` before replacing the sample content.
