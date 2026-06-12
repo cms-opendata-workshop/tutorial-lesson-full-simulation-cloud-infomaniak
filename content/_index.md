@@ -1,39 +1,38 @@
 +++
-title = "Example Lesson"
+title = "Full Simulation Workflow in Infomaniak Cloud"
 layout = "hextra-home"
 +++
 
-{{< hextra/hero-badge link="https://oer-particle-physics.github.io/hugo-styles/docs/quickstart/" >}}
-Shared module docs {{< icon name="arrow-circle-right" attributes="height=14" >}}
+{{< hextra/hero-badge link="https://kubernetes.io/docs/home/" >}}
+Kubernetes documentation {{< icon name="arrow-circle-right" attributes="height=14" >}}
 {{< /hextra/hero-badge >}}
 
 <div class="hx:mt-6 hx:mb-6">
 {{< hextra/hero-headline >}}
-Launch a lesson&nbsp;
+Simulate your own collision dataset&nbsp;
 <br class="hx:xl:block hx:hidden" />
-without copying framework code
+using Infomaniak cloud resources
 {{< /hextra/hero-headline >}}
 </div>
 
 <div class="hx:mb-12">
 {{< hextra/hero-subtitle >}}
-Start with local setup checks, then update `hugo.toml`, then replace the sample content.
-The shared [hugo-styles](https://oer-particle-physics.github.io/hugo-styles/docs/quickstart/) docs provide the authoring, deployment, and update guidance while this template stays focused on lesson-specific files.
+Learn to run a CMS data processing workflow and simulate your own dataset using public cloud resources. 
 {{< /hextra/hero-subtitle >}}
 </div>
 
 <div class="hx:mb-6">
-{{< hextra/hero-button text="Introduction" link="episodes/01-introduction/" >}}
+{{< hextra/hero-button text="Start here" link="episodes/01-introduction/" >}}
 </div>
 
 <div class="hx:mt-6"></div>
 
 {{< hextra/feature-grid cols="3" >}}
 {{< hextra/feature-card
-  title="First-run path"
-  subtitle="Follow the introduction page in order: setup, metadata, then content replacement."
-  icon="book-open"
-  link="episodes/01-introduction/"
+  title="Setup your environment"
+  subtitle="Follow the tutorial introduction page in order: setup, metadata, then content replacement."
+  icon="caret-right-square-fill"
+  link="https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/learners/setup/"
 >}}
 {{< hextra/feature-card
   title="Shared docs"
