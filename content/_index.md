@@ -30,8 +30,8 @@ Learn to run a CMS data processing workflow and simulate your own dataset using 
 {{< hextra/feature-grid cols="3" >}}
 {{< hextra/feature-card
   title="Setup your environment"
-  subtitle="Follow the tutorial introduction page in order: setup, metadata, then content replacement."
-  icon="caret-right-square-fill"
+  subtitle="Follow the tutorial on CMS Opendata "
+  icon="book-open"
   link="https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/learners/setup/"
 >}}
 {{< hextra/feature-card
