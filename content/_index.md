@@ -30,25 +30,24 @@ The shared [hugo-styles](https://oer-particle-physics.github.io/hugo-styles/docs
 
 {{< hextra/feature-grid cols="3" >}}
 {{< hextra/feature-card
-title="First-run path"
-subtitle="Follow the introduction page in order: setup, metadata, then content replacement."
-icon="book-open"
-link="episodes/01-introduction/"
-
-> }}
-> {{< hextra/feature-card
->   title="Shared docs"
->   subtitle="Use the shared `hugo-styles` docs for authoring, deployment, and update guidance after the site is running."
->   icon="academic-cap"
->   link="https://oer-particle-physics.github.io/hugo-styles/docs/quickstart/"
-> }}
-> {{< hextra/feature-card
->   title="Setup checks"
->   subtitle="Verify Hugo Extended first. Go stays optional for normal authoring because `_vendor/` is committed."
->   icon="sparkles"
->   link="learners/setup/"
-> }}
-> {{< /hextra/feature-grid >}}
+  title="First-run path"
+  subtitle="Follow the introduction page in order: setup, metadata, then content replacement."
+  icon="book-open"
+  link="episodes/01-introduction/"
+>}}
+{{< hextra/feature-card
+  title="Shared docs"
+  subtitle="Use the shared `hugo-styles` docs for authoring, deployment, and update guidance after the site is running."
+  icon="academic-cap"
+  link="https://oer-particle-physics.github.io/hugo-styles/docs/quickstart/"
+>}}
+{{< hextra/feature-card
+  title="Setup checks"
+  subtitle="Verify Hugo Extended first. Go stays optional for normal authoring because `_vendor/` is committed."
+  icon="sparkles"
+  link="learners/setup/"
+>}}
+{{< /hextra/feature-grid >}}
 
 <div class="hx:mt-6"></div>
 {{< lesson/overview >}}
