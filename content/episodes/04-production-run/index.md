@@ -3,7 +3,7 @@ title = "Production Run"
 weight = 40
 teaching = 15
 exercises = 10
-questions = ["How to actually run the workflow in order to get the final dataset?"]
+questions = ["How to do the processing with the production amount of events?"]
 objectives = ["Run the production workflow and create the final dataset"]
 keypoints = ["Keypoint TBD"]
 +++

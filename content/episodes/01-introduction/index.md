@@ -3,7 +3,7 @@ title = "Introduction"
 weight = 10
 teaching = 10
 exercises = 10
-questions = ["What does this workflow do?"]
+questions = ["How to use Argo?", "What does this workflow do?"]
 objectives = ["Understand what the workflow does and who is it for."]
 keypoints = ["With this workflow you can create a simulated dataset.", "Because the data processing requires a lot of resources, here we use public cloud resources."]
 +++

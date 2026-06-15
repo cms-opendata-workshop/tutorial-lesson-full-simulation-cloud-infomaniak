@@ -3,7 +3,7 @@ title = "Getting Started"
 weight = 20
 teaching = 15
 exercises = 10
-questions = ["How to run the workflow?"]
+questions = ["How to make the workflow run first with fewer events?", "What preparations are needed before the run?"]
 objectives = ["Run a succesful workflow with a small number of events.", "Understand what is needed from the user in the workflow."]
 keypoints = ["Before the workflow you have to clone the code, create a cluster and have a data fragment.", "The workflow is started with `argo submit`"]
 +++

@@ -3,7 +3,7 @@ title = "Resources"
 weight = 30
 teaching = 15
 exercises = 10
-questions = ["How much resources does my cluster need to have?", "How much will the resources cost?"]
+questions = ["What kind of resources should my cluster have?", "How much will the resources cost?"]
 objectives = ["Understand how many and what kind of nodes are needed for a certain project and how much they cost."]
 keypoints = ["The resources needed for your workflow depend on the number of events and how fast you want your results."]
 +++
