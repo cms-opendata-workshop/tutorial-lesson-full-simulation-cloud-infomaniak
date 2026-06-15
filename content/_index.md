@@ -43,7 +43,7 @@ Learn to run a CMS data processing workflow and simulate your own dataset using 
 {{< hextra/feature-card
   title="First steps"
   subtitle="After setting up your environment, do the first steps here"
-  icon="arrow-down-right"
+  icon="sparkles"
   link="learners/setup/"
 >}}
 {{< /hextra/feature-grid >}}
