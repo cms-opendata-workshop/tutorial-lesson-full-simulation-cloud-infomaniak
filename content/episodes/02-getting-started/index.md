@@ -56,8 +56,6 @@ kubectl create secret generic s3-credentials \
 
 To generate the dataset, the workflow starts with one Python fragment file. Depending on if you want to create your own dataset or, for example, duplicate some set on the [Open Data Portal](https://opendata.cern.ch) you either write your own fragment or get an existing one from the internet.
 
-<!--Check if this is true and add instructions how to create fragments-->
-
 If you want to get a fragments file from the Open Data Portal, choose your dataset and go to the first step's production script. There should be a `curl` command, e.g.
 
 <!--Screenshots how to find fragment curl command-->
@@ -72,3 +70,21 @@ Once the fragments file is in your working file, copy it to the cloud's object s
 ```bash
 openstack object create your_storage XXX-RunXXXXXX-YYYYY-fragment.py --name FullSim/parallel-testing/XXX-RunXXXXXX-YYYYY-fragment.py
 ```
+
+## 4. Choose workflow
+
+If you are doing heavy ion simulation use the other and if pp use the other file
+--> make tabs for this
+
+{{< tabs >}}
+{{< tab name="proton-proton" selected=true >}}
+
+`cms-simulation-process/run-pp-simulation.yaml` 
+
+{{< /tab >}}
+{{< tab name="heavy-ion" >}}
+
+`cms-simulation-process/run-heavy-ion-simulation.yaml`
+
+{{< /tab >}}
+{{< /tabs >}}

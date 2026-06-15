@@ -3,8 +3,8 @@ title = "Full Simulation Workflow in Infomaniak Cloud"
 layout = "hextra-home"
 +++
 
-{{< hextra/hero-badge link="https://kubernetes.io/docs/home/" >}}
-Kubernetes documentation {{< icon name="arrow-circle-right" attributes="height=14" >}}
+{{< hextra/hero-badge link="https://github.com/cms-opendata-processing-tasks/FullSimulationArgoWorkflow" >}}
+Workflow repository {{< icon name="arrow-circle-right" attributes="height=14" >}}
 {{< /hextra/hero-badge >}}
 
 <div class="hx:mt-6 hx:mb-6">
@@ -22,7 +22,7 @@ Learn to run a CMS data processing workflow and simulate your own dataset using 
 </div>
 
 <div class="hx:mb-6">
-{{< hextra/hero-button text="Start here" link="episodes/01-introduction/" >}}
+{{< hextra/hero-button text="Start here" link="learners/setup/" >}}
 </div>
 
 <div class="hx:mt-6"></div>
@@ -30,20 +30,20 @@ Learn to run a CMS data processing workflow and simulate your own dataset using 
 {{< hextra/feature-grid cols="3" >}}
 {{< hextra/feature-card
   title="Setup your environment"
-  subtitle="Follow the tutorial on CMS Opendata "
+  subtitle="First follow the [CMS Open Data on Infomaniak -tutorial]"
   icon="book-open"
   link="https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/learners/setup/"
 >}}
 {{< hextra/feature-card
-  title="Shared docs"
-  subtitle="Use the shared `hugo-styles` docs for authoring, deployment, and update guidance after the site is running."
+  title="Kubernetes documentation"
+  subtitle="Get to know more about cluster architecture on the Kubernetes website."
   icon="academic-cap"
-  link="https://oer-particle-physics.github.io/hugo-styles/docs/quickstart/"
+  link="https://kubernetes.io/docs/home/"
 >}}
 {{< hextra/feature-card
-  title="Setup checks"
-  subtitle="Verify Hugo Extended first. Go stays optional for normal authoring because `_vendor/` is committed."
-  icon="sparkles"
+  title="First steps"
+  subtitle="After setting up your environment, do the first steps here"
+  icon="arrow-down-right-circle-fill"
   link="learners/setup/"
 >}}
 {{< /hextra/feature-grid >}}

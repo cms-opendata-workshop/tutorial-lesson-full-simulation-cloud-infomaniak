@@ -3,66 +3,53 @@ title = "Setup"
 weight = 10
 +++
 
-For normal lesson authoring in this template, you only need Hugo Extended.
-The shared module is vendored in `_vendor/`, so local builds do not require Go.
 
-{{< callout type="note" title="When Go is needed" >}}
-Go is only needed if you maintain module updates locally
-(for example, running `hugo mod tidy`, `hugo mod vendor`, or the migration checker).
+<!--
+To-do: No dependence to Kati's tutorial with the setup steps and instead copy them here.
+ -->
+
+To get setup for this project follow two steps in another tutorial:
+
+## 1. [Install Infomaniak, OpenStack and Argo](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/learners/setup/)
+
+## 2. [Order a cluster for testing](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/episodes/04-cluster/)
+
+{{< callout type="note" title="Bonus Excercise" >}}
+In the same tutorial the step [Set up a workflow](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/episodes/05-workflow/) is very useful, if running Argo workflows is new to you. It is recommended to make sure that the `simple-test-s3.yaml` workflow in that tutorial runs on your cluster before continuing.
 {{< /callout >}}
 
-{{< tabs >}}
-{{< tab name="macOS" selected=true >}}
+## 3. Enable Argo for the cluster
+
+Once you have created a cluster on the Infomaniak Dashboard and it is up and running, you can download the Kubeconfig file to your computer. Move the config to your working directory and set it to your environment variables:
 
 ```bash
-brew install hugo
+export KUBECONFIG=/path/to/your/pck-xxxxxxx-kubeconfig
 ```
-
-{{< /tab >}}
-{{< tab name="Linux" >}}
 
 ```bash
-sudo apt install hugo
+kubectl create ns argo
 ```
 
-{{< /tab >}}
-{{< tab name="Windows" >}}
+## 4. Credentials for Argo to be able to use cloud storage
 
-```powershell
-winget install Hugo.Hugo.Extended
-```
-
-{{< /tab >}}
-{{< /tabs >}}
-
-{{< tabs >}}
-{{< tab name="bash" selected=true >}}
+For Argo to be able to have access to your OpenStack storage in the Infomaniak cloud, one has to create credentials:
 
 ```bash
-hugo version
+openstack ec2 credentials create
 ```
 
-{{< /tab >}}
-{{< tab name="zsh" >}}
+Save the output in `access` and `secret` fields. You will need them for the next command, which sets the credentials to the cluster.
 
-```zsh
-hugo version
+```bash
+kubectl create secret generic s3-credentials \
+  --from-literal=S3_ACCESS_KEY_ID='<the value of the access field>' \
+  --from-literal=S3_SECRET_ACCESS_KEY='<the value of the secret field>' \
+  -n argo
 ```
 
-{{< /tab >}}
-{{< tab name="fish" >}}
-
-```fish
-hugo version
 ```
-
-{{< /tab >}}
-{{< /tabs >}}
-
-If you plan to update `_vendor/` locally, install Go and verify with `go version`.
 
 ## Next step
 
-Once `hugo version` and `hugo server` work, return to
+Once you have a working environment, continue to
 [Introduction]({{< relref "/episodes/01-introduction" >}})
-and continue with step 2: update `hugo.toml` before replacing the sample content.
