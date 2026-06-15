@@ -1,3 +1,7 @@
+github.com/hugomods/icons v0.6.6 h1:gGlafcBDRP7sSID+tgLcWdog+s/QBj8DIfU+h9tZj1U=
+github.com/hugomods/icons v0.6.6/go.mod h1:cIkSvK6W0q6N4U6n9KGz+QfRWQXAW0INd+1P31gPNGg=
+github.com/hugomods/icons/vendors/bootstrap v0.5.11 h1:8gZnk0wR1JSC+07L7T1okJiGAva7V1rGnOIQYSsr4/8=
+github.com/hugomods/icons/vendors/bootstrap v0.5.11/go.mod h1:PAN+bzB4MW4dkA2gZbmKRJQ6lskHzoosqZzlCTgPv0k=
 github.com/imfing/hextra v0.12.1 h1:3t1n0bmJbDzSTVfht93UDcfF1BXMRjeFojA071ri2l8=
 github.com/imfing/hextra v0.12.1/go.mod h1:vi+yhpq8YPp/aghvJlNKVnJKcPJ/VyAEcfC1BSV9ARo=
 github.com/oer-particle-physics/hugo-styles v0.0.0-20260412131146-fb26f680421d h1:udKGONgLJB4+DTVTy9CHQL1pku3cIyxZSgRPNB73ooI=
