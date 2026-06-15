@@ -10,9 +10,12 @@ To-do: No dependence to Kati's tutorial with the setup steps and instead copy th
 
 To get setup for this project follow two steps in another tutorial:
 
-### 1. [Install Infomaniak, OpenStack and Argo](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/learners/setup/)
+### 1. Install Infomaniak, OpenStack and Argo
+Follow the [Setup](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/learners/setup/) in CMS Open Data on Infomaniak -tutorial.
 
-### 2. [Order a cluster for testing](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/episodes/04-cluster/)
+### 2. Order a cluster for testing
+
+Follow the [Kubernetes Cluster](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/episodes/04-cluster/) in CMS Open Data on Infomaniak -tutorial.
 
 {{< callout type="note" title="Bonus Excercise" >}}
 In the same tutorial the step [Set up a workflow](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/episodes/05-workflow/) is very useful, if running Argo workflows is new to you. It is recommended to make sure that the `simple-test-s3.yaml` workflow in that tutorial runs on your cluster before continuing.

@@ -88,3 +88,5 @@ If you are doing heavy ion simulation use the other and if pp use the other file
 
 {{< /tab >}}
 {{< /tabs >}}
+
+<!-- Muista sanoa että imagejen pullaaminen kestää ekalla kerralla pidempään-->
