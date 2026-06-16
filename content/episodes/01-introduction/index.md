@@ -44,7 +44,6 @@ flowchart TD
     F --> G[RECO]
     G --> H[NANO]
     H --> I[Analysis]
-    L --> K[End]
 ```
 
 This workflow is completed by running the `run-pp-simulation.yaml` file. More on that in the next chapter.
@@ -56,8 +55,9 @@ Heavy ion simulation, on the other hand, is completed as such:
 ```mermaid
 flowchart TD
     A[Define params] --> B[Divide jobs]
-    B --> C[GEN-SIM]
-    C --> D[HLT-RECO]
+    B --> C{GEN-SIM}
+    C --> |HiSIGNAL| D[HLT-RECO]
+    C --> |HLT-RECO| E[Analysis]
     D --> E[End]
 ```
 
