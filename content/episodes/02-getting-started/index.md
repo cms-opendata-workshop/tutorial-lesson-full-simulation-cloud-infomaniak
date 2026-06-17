@@ -1,11 +1,11 @@
 +++
-title = "Getting Started"
+title = "First Run"
 weight = 20
-teaching = 15
-exercises = 10
+teaching = 10
+exercises = 15
 questions = ["How to make the workflow run first with fewer events?", "What preparations are needed before the run?"]
 objectives = ["Run a succesful workflow with a small number of events.", "Understand what is needed from the user in the workflow."]
-keypoints = ["Before the workflow you have to clone the code, create a cluster and have a data fragment.", "The workflow is started with `argo submit`"]
+keypoints = ["Before the workflow you have to clone the workflow repository, create a cluster and have a data fragment.", "Data fragment is uploaded to the object storage with `openstack object create`", "Once those steps are completed, the workflow can be started with `argo submit`"]
 +++
 
 ## 1. Clone the workflow
@@ -43,7 +43,7 @@ kubectl apply -n argo --server-side -f https://github.com/argoproj/argo-workflow
 kubectl apply -f manifests/
 ```
 
-In the [Setup tutorial](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/), you created s3credentials. Give them now to the cluster:
+In [Setup]({{ < relref "/learners/setup" >}}), you created s3credentials. Give them now to the cluster:
 
 ```bash
 kubectl create secret generic s3-credentials \
@@ -79,14 +79,35 @@ If you are doing heavy ion simulation use the other and if pp use the other file
 {{< tabs >}}
 {{< tab name="proton-proton" selected=true >}}
 
-`cms-simulation-process/run-pp-simulation.yaml` 
+If you want to process a proton-proton collision simulation dataset, run:
+
+```bash
+cd /path/to/FullSimulationArgoWorkflow
+argo submit -n argo cms-simulation-process/run-pp-simulation.yaml
+```
 
 {{< /tab >}}
 {{< tab name="heavy-ion" >}}
 
-`cms-simulation-process/run-heavy-ion-simulation.yaml`
+To-do: Decide if you want hisignal
+
+If you want to process a simulated heavy-ion collision dataset, run:
+
+```bash
+cd /path/to/FullSimulationArgoWorkflow
+argo submit -n argo cms-simulation-process/run-heavy-ion-simulation.yaml
+```
 
 {{< /tab >}}
 {{< /tabs >}}
 
-<!-- Muista sanoa että imagejen pullaaminen kestää ekalla kerralla pidempään-->
+Inspect the workflow status with
+
+```bash
+argo get @latest -n argo
+```
+
+During the first run, the PodInitializing might take a long time, because this is the first time the container images are pulled to the cluster's nodes.
+
+Once the workflow has run, the output of `argo get @latest -n argo` will look something like this: 
+![Picture of a command line output, that has all the names of steps and check marks next to each one of them](image.png)

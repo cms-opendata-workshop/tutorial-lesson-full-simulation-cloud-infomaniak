@@ -2,17 +2,16 @@
 title = "Introduction"
 weight = 10
 teaching = 10
-exercises = 10
-questions = ["How to use Argo?", "What does this workflow do?"]
+questions = ["What does this workflow do?", "Who is this workflow for?"]
 objectives = ["Understand what the workflow does and who is it for."]
 keypoints = ["With this workflow you can create a simulated dataset.", "Because the data processing requires a lot of resources, here we use public cloud resources."]
 +++
 
-# About the workflow
+## About the workflow
 
 The goal of this workflow is to use public cloud resources, here Infomaniak resources, to process data following certain steps, and ultimately produce a simulated dataset ready for data analysis.
 
-# Why public cloud?
+## Why public cloud?
 
 Data processing can, in theory, be done with
 
@@ -22,20 +21,15 @@ Data processing can, in theory, be done with
 
 This tutorial shows how to create a simulated dataset without access to private resources and only using the public cloud resources. Infomaniak is an affordable Switzerland based cloud provider, whose resources we will be using throughout this tutorial.
 
-# Full Simulation Workflow
 
-### Prerequisites
+## The Steps in a Full Simulation Workflow
 
-To get an Infomaniak Kubernetes cluster and Argo setup on it, follow this [Setup tutorial](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/)
-
-### Workflow steps
-
-#### Proton-proton simulation
+### Proton-proton simulation
 
 Proton-proton simulation follows such steps:
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[Define params] --> B[Divide jobs]
     B --> C[GEN]
     C --> D[SIM]
@@ -46,63 +40,42 @@ flowchart TD
     H --> I[Analysis]
 ```
 
-This workflow is completed by running the `run-pp-simulation.yaml` file. More on that in the next chapter.
+This workflow is completed by running the `run-pp-simulation.yaml` file. In that file there are a few parameters, that the user needs to define.
 
-#### Heavy ion simulation
+- **bucket:** the name of your OpenStack Object Storage
+- **dataName:** the name of the directory you want your dataset in
+- **fragFileName:** the name you give to the data fragment when copying it to the Object Storage
+- **totEvents:** the total amount of events in the dataset. Defines the number of jobs.
+- **runYear:** the year of the Run you want to simulate. Defines e.g. the conditions and beamspots of the simulations.
+
+### Heavy ion simulation
 
 Heavy ion simulation, on the other hand, is completed as such:
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[Define params] --> B[Divide jobs]
-    B --> C{GEN-SIM}
+    B --> C[GEN-SIM]
     C --> |HiSIGNAL| D[HLT-RECO]
-    C --> |HLT-RECO| E[Analysis]
-    D --> E[End]
+    C --> D[HLT-RECO]
+    D --> E[Analysis]
 ```
 
-Heavy ion simulation is in the file `run-heavy-ion-simulation.yaml`. Running the .yaml files is done in chapter xx.
+... meaning that some datasets have the HiSIGNAL step and some don't. If you want to run the HiSIGNAL step in your workflow, you will have to modify the parameters in the file `run-heavy-ion-simulation.yaml`. 
 
-## 1. Run setup checks first
+- **bucket:** the name of your OpenStack Object Storage
+- **dataName:** the name of the directory you want your dataset in
+- **fragFileName:** the name you give to the data fragment when copying it to the Object Storage
+- **totEvents:** the total amount of events in the dataset. Defines the number of jobs.
+- **runYear:** the year of the Run you want to simulate. Defines e.g. the conditions and beamspots of the simulations.
 
-Before editing content, confirm your toolchain from the
-[Setup]({{< relref "/learners/setup" >}}) page.
 
-Then run:
+More information about running and editing the yaml files is in the next chapter.
 
-```bash
-hugo version
-hugo server
-```
-
-This works without Go because the template commits a vendored module tree in `_vendor/`.
-
-If setup is unclear, use the shared docs:
-
-- [hugo-styles Quickstart](https://oer-particle-physics.github.io/hugo-styles/docs/quickstart/)
-- [hugo-styles Troubleshooting](https://oer-particle-physics.github.io/hugo-styles/docs/troubleshooting/)
-
-## 2. Update `hugo.toml` early
-
-Edit these fields before replacing episode content:
-
-| Field                                       | Why it matters                                                                                            |
-| ------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `baseURL`                                   | Production URL for deployed pages and canonical links, for example `https://<account>.github.io/<repo>/`. |
-| top-level `title`                           | Site title used in browser/title surfaces.                                                                |
-| `[params.lesson].title`                     | Lesson title shown in theme components.                                                                   |
-| `[params.lesson].tagline` and `description` | Homepage framing and metadata summary.                                                                    |
-| `[params.lesson].contact`                   | Contact shown in lesson metadata contexts.                                                                |
-| `[params.lesson].repo`                      | Footer source link target in the UI.                                                                      |
-| `[params.lesson].editBranch`                | Branch used for “Edit this page” links.                                                                   |
-| `[params.versioning]`                       | Controls whether the deployment workflow publishes only `Latest` or also archived branch/tag builds.      |
-| `[[menus.main]]` GitHub `url`               | Top-nav GitHub link target.                                                                               |
-
-If you plan to deploy on GitHub Pages, enable Pages in the repository settings and choose
-`GitHub Actions` as the source before the first push to `main`.
-The included workflow deploys on pushes to `main`, so that first push should already have a configured Pages target.
-
-{{< callout type="warning" title="Keep these as-is unless you know why" >}}
-Do not remove the `module.imports` block that points to `github.com/oer-particle-physics/hugo-styles`.
-That import is what provides the shared layouts, shortcodes, and supporting behavior.
+{{< callout type="prereq" title="Prerequisites" >}}
+To get an Infomaniak Kubernetes cluster and Argo installed on it, follow the [Setup]({{ < relref "/learners/setup/" >}})
 {{< /callout >}}
+
+After you have completed the prerequisites, you can continue.
+
+

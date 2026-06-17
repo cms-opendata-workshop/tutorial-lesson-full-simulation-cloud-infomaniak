@@ -5,7 +5,7 @@ weight = 10
 
 
 <!--
-To-do: No dependence to Kati's tutorial with the setup steps and instead copy them here.
+To-do: No dependence to Kati's tutorial with the setup steps and instead copy them here (?)
  -->
 
 To get setup for this project follow two steps in another tutorial:
@@ -50,6 +50,23 @@ kubectl create secret generic s3-credentials \
   -n argo
 ```
 
+### 5. Connect your device to the OpenStack Object Storage
+
+In the [Infomaniak dashboard website](https://manager.infomaniak.com/) install the OpenRC file to your working directory.
+
+<!-- Better instructions for installing the RC file -->
+
+```bash
+source PCP-AGHLSED-openrc.sh
+```
+
+The command will prompt you a password, which you have set while creating the OpenStack access in the first step. When the source has run successfully, test that
+
+```bash
+openstack object list your_storage
+```
+
+succeeds.
 
 ### Next step
 

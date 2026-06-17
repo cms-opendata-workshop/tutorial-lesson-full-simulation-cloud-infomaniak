@@ -5,27 +5,32 @@ teaching = 15
 exercises = 10
 questions = ["How to do the processing with the larger amount of events?"]
 objectives = ["Run the production workflow and create the final dataset"]
-keypoints = ["Keypoint TBD"]
+keypoints = [" "]
 +++
 
 
-{{< challenge title="First challenge" >}}
-Use this block for active learning prompts.
+Based on how many events you are going to simulate, you should have ordered a suitable cluster in the last chapter. 
 
-{{< hint >}}
-Hints are optional and collapsible.
-{{< /hint >}}
+Connect again to the cluster by moving the Kubeconfig to your working directory and export the path to Kubeconfig:
+```bash
+mv /path/to/pck-xxxxxxx-kubeconfig /path/to/workingdir
+export KUBECONFIG=/path/to/workingdir/pck-xxxxxxx-kubeconfig
+```
 
-{{< solution >}}
-Solutions stay collapsible and can be expanded globally on the all-in-one page.
-{{< /solution >}}
-{{< /challenge >}}
+Create the argo namespace:
+```bash
+kubectl create ns argo
+```
 
-{{< learner >}}
-Use learner-only notes when participants need a direct prompt or reminder.
-{{< /learner >}}
+Attach your s3credentials to this new cluster:
+```bash
+kubectl create secret generic s3-credentials \
+  --from-literal=S3_ACCESS_KEY_ID='<the value of the access field>' \
+  --from-literal=S3_SECRET_ACCESS_KEY='<the value of the secret field>' \
+  -n argo
+```
 
-{{< instructor >}}
-Use instructor-only notes for facilitation advice or expected trouble spots.
-{{< /instructor >}}
+Connect to the OpenStack by running
+```bash
 
+```
