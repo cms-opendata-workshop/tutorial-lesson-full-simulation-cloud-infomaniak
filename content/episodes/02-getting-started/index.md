@@ -43,7 +43,7 @@ kubectl apply -n argo --server-side -f https://github.com/argoproj/argo-workflow
 kubectl apply -f manifests/
 ```
 
-In [Setup]({{ < relref "/learners/setup" >}}), you created s3credentials. Give them now to the cluster:
+In [Setup]({{< relref "/learners/setup" >}}), you created s3credentials. Give them now to the cluster:
 
 ```bash
 kubectl create secret generic s3-credentials \

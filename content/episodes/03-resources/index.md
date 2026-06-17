@@ -8,7 +8,7 @@ objectives = ["Understand how many and what kind of nodes are needed for a certa
 keypoints = ["The resources needed for your workflow depend on the number of events and how fast you want your results."]
 +++
 
-To get to know the basics of cloud computing resources, please complete the [Setup]({{ < relref "/learners/setup" >}}) and read more on [the Kubernetes website](https://kubernetes.io/docs/concepts/architecture/).
+To get to know the basics of cloud computing resources, please complete the [Setup]({{< relref "/learners/setup" >}}) and read more on [the Kubernetes website](https://kubernetes.io/docs/concepts/architecture/).
 
 # About the nodes
 

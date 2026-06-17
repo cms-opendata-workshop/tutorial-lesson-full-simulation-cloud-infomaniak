@@ -73,7 +73,7 @@ flowchart LR
 More information about running and editing the yaml files is in the next chapter.
 
 {{< callout type="prereq" title="Prerequisites" >}}
-To get an Infomaniak Kubernetes cluster and Argo installed on it, follow the [Setup]({{ < relref "/learners/setup/" >}})
+To get an Infomaniak Kubernetes cluster and Argo installed on it, complete the [Setup]({{< relref "/learners/setup/" >}}) first.
 {{< /callout >}}
 
 After you have completed the prerequisites, you can continue.
