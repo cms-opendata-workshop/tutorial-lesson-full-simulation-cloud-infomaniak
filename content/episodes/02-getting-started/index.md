@@ -8,6 +8,10 @@ objectives = ["Run a succesful workflow with a small number of events.", "Unders
 keypoints = ["Before the workflow you have to clone the workflow repository, create a cluster and have a data fragment.", "Data fragment is uploaded to the object storage with `openstack object create`", "Once those steps are completed, the workflow can be started with `argo submit`"]
 +++
 
+{{< callout type="prereq" title="Prerequisites" >}}
+First, complete the [Setup]({{< relref "/learners/setup/" >}}) to get an Infomaniak Kubernetes cluster and Argo installed on it.
+{{< /callout >}}
+
 ## 1. Clone the workflow
 
 Clone the workflow repository on your computer using:
@@ -71,35 +75,14 @@ Once the fragments file is in your working file, copy it to the cloud's object s
 openstack object create your_storage XXX-RunXXXXXX-YYYYY-fragment.py --name FullSim/parallel-testing/XXX-RunXXXXXX-YYYYY-fragment.py
 ```
 
-## 4. Choose workflow
+## 4. Submit the workflow
 
-If you are doing heavy ion simulation use the other and if pp use the other file
---> make tabs for this
-
-{{< tabs >}}
-{{< tab name="proton-proton" selected=true >}}
-
-If you want to process a proton-proton collision simulation dataset, run:
+Deploy the workflow to the cluster by running
 
 ```bash
 cd /path/to/FullSimulationArgoWorkflow
 argo submit -n argo cms-simulation-process/run-pp-simulation.yaml
 ```
-
-{{< /tab >}}
-{{< tab name="heavy-ion" >}}
-
-To-do: Decide if you want hisignal
-
-If you want to process a simulated heavy-ion collision dataset, run:
-
-```bash
-cd /path/to/FullSimulationArgoWorkflow
-argo submit -n argo cms-simulation-process/run-heavy-ion-simulation.yaml
-```
-
-{{< /tab >}}
-{{< /tabs >}}
 
 Inspect the workflow status with
 
