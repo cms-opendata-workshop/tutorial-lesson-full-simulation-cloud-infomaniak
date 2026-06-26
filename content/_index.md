@@ -31,19 +31,19 @@ Learn to run a CMS data processing workflow and simulate your own dataset using 
 {{< hextra/feature-card
   title="Setup your environment"
   subtitle="First follow the CMS Open Data on Infomaniak -tutorial"
-  icon="book-open"
+  icon="adjustments"
   link="https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/learners/setup/"
 >}}
 {{< hextra/feature-card
   title="Kubernetes documentation"
   subtitle="Get to know more about cluster architecture on the Kubernetes website."
-  icon="academic-cap"
+  icon="book-open"
   link="https://kubernetes.io/docs/home/"
 >}}
 {{< hextra/feature-card
   title="First steps"
   subtitle="After setting up your environment, do the first steps here"
-  icon="sparkles"
+  icon="chevron-double-right"
   link="learners/setup/"
 >}}
 {{< /hextra/feature-grid >}}

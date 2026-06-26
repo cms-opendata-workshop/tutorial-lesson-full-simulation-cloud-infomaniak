@@ -1,5 +1,5 @@
 +++
-title = "Resources"
+title = "Computing Resources"
 weight = 30
 teaching = 15
 exercises = 10
@@ -14,18 +14,18 @@ To get to know the basics of cloud computing resources, please complete the [Set
 
 ## About the nodes
 
-One processing job should be a maximum of 1 600 events. The job takes at most 1 vCPU which means, that every node of 4 vCPUs can run 4 jobs simultaneously.
+One processing job should be a maximum of 800 events. The job takes at most 1 vCPU which means, that every node of 4 vCPUs can run 4 jobs simultaneously.
 
 $$
 \begin{align*}
-\text{number of jobs} = \frac{\text{events in total}}{1 600} \\
+\text{number of jobs} = \frac{\text{events in total}}{800} \\
 \text{number of nodes} = \frac{\text{number of jobs}}{4}
 \end{align*}
 $$
 
+Infomaniak offers different kinds of nodes, but currently, the 4 vCPU, 16 GB RAM and 80 GB disk ones are the best for this purpose. Mostly because 4 vCPU is the most one can get with a free tier, and the CMSSW container images are quite large and take a lot of disk space on the node.
 
 To-do:
-- Why the 4 vCPU? Is it cheaper to order less 4 vCPU nodes than more of the nodes with less CPU?
 - Count from the memory plots how much is the least of memory it needs
 
 
@@ -33,17 +33,29 @@ To-do:
 
 To run the workflow you need a cluster with a control plane and processing nodes that do the actual jobs. These are priced based on the time they are online.
 
-| Product                                                              | Price (CHF)         | Amount needed         |
-| -------------------------------------------------------------------- | ------------------- | --------------------- |
-| **Control plane:** Cluster Dedicated 4                               | 0.04 CHF / hour     | 1                     |
-| **Nodes:** 4 vCPU, 16 GB RAM, 80 GB Disk Space                       | 0.03191 CHF / hour  | 1 for every 4 jobs    |
+| Product                                         | Price (CHF)         | Amount needed       |
+| ----------------------------------------------- | ------------------- | ------------------- |
+| **Control plane:** Cluster Dedicated 4          | 0.04 CHF / hour     | 1                   |
+| **Nodes:** 4 vCPU, 16 GB RAM, 80 GB Disk Space  | 0.03191 CHF / hour  | 1 for every 4 jobs  |
 
 
-For example if you are processing a dataset with 50 000 events, the total cost would be about 0.29 CHF / hour.
+For example if you are processing a dataset with 50 000 events, the total cost would be about 0.52 CHF / hour.
 
 ## How long are the nodes in use?
 
 The time of the processing depends on how many events are in one job. If a user wants to get the dataset more quickly, they should order a cluster with more nodes. That way the jobs will take less time because they are more spread out.
+
+For example with 800 events per job the steps take about
+
+| **Step**        | **Time estimation**     |
+| --------------- | ----------------------- |
+| GEN             |                         |
+| SIM             |                         |
+| DIGIPremix      |                         |
+| HLT             |                         |
+| RECO            |                         |
+| PAT             |                         |
+| NANO            |                         |
 
 ## So the total price would be...
 

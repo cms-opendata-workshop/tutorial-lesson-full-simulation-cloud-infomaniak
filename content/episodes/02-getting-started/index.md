@@ -5,62 +5,24 @@ teaching = 10
 exercises = 15
 questions = ["How to make the workflow run first with fewer events?", "What preparations are needed before the run?"]
 objectives = ["Run a succesful workflow with a small number of events.", "Understand what is needed from the user in the workflow."]
-keypoints = ["Before the workflow you have to clone the workflow repository, create a cluster and have a data fragment.", "Data fragment is uploaded to the object storage with `openstack object create`", "Once those steps are completed, the workflow can be started with `argo submit`"]
+keypoints = ["Before the workflow you have to upload file(s) to the object storage, with which the workflow starts the processing.", "The workflow can be started with `argo submit -n argo` and monitored with `argo get @latest -n argo`"]
 +++
 
 {{< callout type="prereq" title="Prerequisites" >}}
 First, complete the [Setup]({{< relref "/learners/setup/" >}}) to get an Infomaniak Kubernetes cluster and Argo installed on it.
 {{< /callout >}}
 
-## 1. Clone the workflow
 
-Clone the workflow repository on your computer using:
+## 1. Upload input files
 
-```bash
-git clone git@github.com:cms-opendata-processing-tasks/FullSimulationArgoWorkflow.git
-```
+The workflow can start from two starting points, either generate events from a data fragment, or if you have already done the LHE GEN step, you can start from the root files from that step and go straight to the SIM step.
 
-## 2. Kubernetes and Argo
+{{<tabs>}}
+{{<tab name="GEN" selected="true">}}
 
-Once you have created a cluster on the Infomaniak Dashboard and it is up and running, you can download the Kubeconfig file to your computer. Move the config to your working directory and set it to your environment variables:
+Depending on if you want to create your own dataset or, for example, duplicate some set on the [Open Data Portal](https://opendata.cern.ch) you either write your own fragment or get an existing one from the internet.
 
-```bash
-export KUBECONFIG=/path/to/your/pck-xxx-kubeconfig
-```
-
-Check the connection to the cluster
-
-```bash
-kubectl cluster-info
-
-Kubernetes control plane is running at https://83.xxxx
-CoreDNS is running at https://83.xx:xxxx/api/v1/namespaces/kube-system/services/pck-yxulp7c-addon-coredns:udp-53/proxy
-
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-```
-
-Next apply the argo tools:
-
-```bash
-kubectl create namespace argo
-kubectl apply -n argo --server-side -f https://github.com/argoproj/argo-workflows/releases/download/v4.0.1/install.yaml
-kubectl apply -f manifests/
-```
-
-In [Setup]({{< relref "/learners/setup" >}}), you created s3credentials. Give them now to the cluster:
-
-```bash
-kubectl create secret generic s3-credentials \
-  --from-literal=S3_ACCESS_KEY_ID='<the value of the access field>' \
-  --from-literal=S3_SECRET_ACCESS_KEY='<the value of the secret field>' \
-  -n argo
-```
-
-## 3. Fragments <!--Is this a universal step? Should this be in the different sim case chapters?-->
-
-To generate the dataset, the workflow starts with one Python fragment file. Depending on if you want to create your own dataset or, for example, duplicate some set on the [Open Data Portal](https://opendata.cern.ch) you either write your own fragment or get an existing one from the internet.
-
-If you want to get a fragments file from the Open Data Portal, choose your dataset and go to the first step's production script. There should be a `curl` command, e.g.
+If you want to get a fragments file from the Open Data Portal, choose your dataset and go to the GEN steps production script. There should be a `curl` command, e.g.
 
 <!--Screenshots how to find fragment curl command-->
 
@@ -69,13 +31,81 @@ curl -s -k https://cms-pdmv-prod.web.cern.ch/mcm/public/restapi/requests/get_fra
 [ -s Configuration/GenProduction/python/XXX-RunXXXXXX-YYYYY-fragment.py ]
 ```
 
-Once the fragments file is in your working file, copy it to the cloud's object storage. You should be familiar with Infomaniak object storage after the [Setup Tutorial](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/)
+Once the fragments file is in your working directory, copy it to the cloud's object storage. You should be familiar with Infomaniak object storage after the [Setup](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/)
 
 ```bash
 openstack object create your_storage XXX-RunXXXXXX-YYYYY-fragment.py --name FullSim/parallel-testing/XXX-RunXXXXXX-YYYYY-fragment.py
 ```
+{{</tab>}}
 
-## 4. Submit the workflow
+{{<tab name="LHE GEN">}}
+
+LHE is the Les Houches standard event format for the event generation. If you want to use the LHE format, you should do the event generation before running the workflow. Then your workflow will skip the GEN step and go directly to SIM using the files you provide from the event generation.
+
+More information about event generation for the LHE format [here](https://fnallpc.github.io/generators/aio/index.html) or by reading the production scripts of the LHE GEN step of a simulated dataset in the [Open Data portal](https://opendata.cern.ch).
+
+The event generation produces root files, which you have to copy to the object storage. Let's say, the root files are in your working directory in a folder called `LHEGEN`.
+
+```bash
+swift upload your_storage GEN/ --object-name FullSim/my-dataset/GEN/
+```
+
+{{</tab>}}
+{{</tabs>}}
+
+{{<callout type="note" title="File upload not working?">}}
+If the `openstack` and `swift` commands are not working, check if you installed openstack tools in a Python virtual environment in the [Setup]({{< relref "learners/setup" >}}).
+
+```bash
+source venv/bin/activate
+pip install python-openstackclient python-swiftclient
+# now run the swift command
+```
+
+Also make sure that you have authenticated for the OpenStack access by running
+```bash
+source PCP-XXXXXXX-openrc.sh
+```
+{{</callout>}}
+
+
+## 2. Edit the parameters
+
+As said in the introduction, the `cms-simulation-process/run-pp-simulation.yaml` file includes some parameters that need to be updated to each user's situation. Open the yaml file with your preferred editor and edit the commented parameters.
+
+```yaml
+  arguments:
+    parameters:
+      ### EDIT BELOW: replace the placeholder 'yourstorage' with your object storage name
+      - name: bucket
+        value: yourstorage
+      - name: dataName
+        value: "my-dataset"
+      ### EDIT BELOW: replace the placeholder 'fragments.py' with the file name of your fragment
+      - name: fragFileName
+        value: "fragments.py"
+      ### EDIT BELOW: replace the placeholder '10' with the amount of events you want to process
+      - name: totEvents
+        value: 10
+      ### EDIT BELOW: replace the placeholder '1' with 4 times the amount of nodes on your cluster e.g. 4 times 2 nodes --> nJobs is 8
+      - name: nJobs
+        value: 1
+      ### EDIT BELOW: replace the placeholder '2016' with the year of the run you are simulating
+      - name: runYear
+        value: "2016"
+```
+
+
+If you want to use the LHE format in the event generation, you should do it before the workflow with resources you have available. Les Houches event generation is not included in this tutorial. Because the event generation is done elsewhere, for these situations, the boolean `startFromSim` should be set to true.
+
+
+```yaml
+      ### EDIT BELOW: If you have already completed the LHE GEN step change the boolean to true
+      - name: startFromSim
+        value: "false"
+```
+
+## 3. Submit the workflow
 
 Deploy the workflow to the cluster by running
 

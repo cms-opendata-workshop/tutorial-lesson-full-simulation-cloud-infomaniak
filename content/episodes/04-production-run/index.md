@@ -8,6 +8,18 @@ objectives = ["Run the production workflow and create the final dataset"]
 keypoints = [" "]
 +++
 
+## Order a production size cluster
+
+After the last chapter, you should have an understanding of how many nodes are needed in a cluster to process a dataset for your specific needs.
+
+#### 1. Delete the test cluster
+
+
+
+#### 2. Order a larger cluster
+#### 3. Setup the cluster
+#### 4. Run the workflow
+
 
 Based on how many events you are going to simulate, you should have ordered a suitable cluster in the last chapter. 
 
