@@ -27,7 +27,7 @@ The directory in which you copied the Git repository is called the working direc
 {{<callout type="note" title="Metrics Server">}}
 If you want to be able to inspect the memory and CPU usage of your cluster you have to clone another repository and run the yaml that configures the Metrics Server:
 ```bash
-git clone git@github.com:cms-opendata-processing-tasks/WorkflowUtils.git
+git clone https://github.com/cms-opendata-processing-tasks/WorkflowUtils.git
 cd WorkflowUtils
 
 kubectl apply -f components.yaml
