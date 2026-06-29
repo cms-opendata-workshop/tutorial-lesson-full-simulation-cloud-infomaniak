@@ -150,6 +150,11 @@ terraform apply
 
 The creating of the cluster can take a while, up to an hour sometimes.
 
+Once it's done, extract your cluster's kubeconfig
+```bash
+terraform output -raw kubeconfig > ./kubeconfig
+```
+
 {{</tab>}}
 {{<tab name="Web Interface">}}
 
@@ -167,7 +172,7 @@ In the CMS Open Data on Infomaniak tutorial the step [Set up a workflow](https:/
 Once you have created a cluster on the Infomaniak Dashboard and it is up and running, you can download the Kubeconfig file to your computer. Move the config to your working directory and set it to your environment variables:
 
 ```bash
-export KUBECONFIG=/path/to/your/pck-xxxxxxx-kubeconfig
+export KUBECONFIG=/path/to/your/kubeconfig
 ```
 
 Setup Argo Workflows:
