@@ -20,7 +20,7 @@ You don't need to clone the code from that tutorial, since it is for another wor
 Clone the GitHub repository for this workflow:
 
 ```bash
-git clone git@github.com:cms-opendata-processing-tasks/FullSimulationArgoWorkflow.git
+git clone https://github.com/cms-opendata-processing-tasks/FullSimulationArgoWorkflow.git
 ```
 The directory in which you copied the Git repository is called the working directory from now on.
 
