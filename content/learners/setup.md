@@ -1,5 +1,5 @@
 +++
-title = "Setup"
+title = "Get Started"
 weight = 10
 +++
 
@@ -24,17 +24,6 @@ git clone https://github.com/cms-opendata-processing-tasks/FullSimulationArgoWor
 ```
 The directory in which you copied the Git repository is called the working directory from now on.
 
-{{<callout type="note" title="Metrics Server">}}
-If you want to be able to inspect the memory and CPU usage of your cluster you have to clone another repository and run the yaml that configures the Metrics Server:
-```bash
-git clone https://github.com/cms-opendata-processing-tasks/WorkflowUtils.git
-cd WorkflowUtils
-
-kubectl apply -f components.yaml
-```
-
-After this you can run `kubectl top pods -n argo` or use on of the helper scripts in that repository, such as `./start_memory_scan.sh`.
-{{</callout>}}
 
 ### 3. Order a cluster for testing
 
@@ -188,6 +177,17 @@ kubectl apply -n argo --server-side -f https://github.com/argoproj/argo-workflow
 kubectl apply -f manifests/
 ```
 
+{{<callout type="note" title="Metrics Server">}}
+If you want to be able to inspect the memory and CPU usage of your cluster you have to clone another repository and run the yaml that configures the Metrics Server:
+```bash
+git clone https://github.com/cms-opendata-processing-tasks/WorkflowUtils.git
+cd WorkflowUtils
+
+kubectl apply -f components.yaml
+```
+
+After this you can run `kubectl top pods -n argo` or use on of the helper scripts in that repository, such as `./start_memory_scan.sh`.
+{{</callout>}}
 
 ### 4. Credentials for Argo to be able to use cloud storage
 
