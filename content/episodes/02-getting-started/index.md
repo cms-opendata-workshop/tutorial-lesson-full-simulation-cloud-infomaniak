@@ -34,7 +34,7 @@ curl -s -k https://cms-pdmv-prod.web.cern.ch/mcm/public/restapi/requests/get_fra
 Once the fragments file is in your working directory, copy it to the cloud's object storage. You should be familiar with Infomaniak object storage after the [Setup](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/)
 
 ```bash
-openstack object create your_storage XXX-RunXXXXXX-YYYYY-fragment.py --name FullSim/parallel-testing/XXX-RunXXXXXX-YYYYY-fragment.py
+openstack object create your_storage XXX-RunXXXXXX-YYYYY-fragment.py --name FullSim/my-dataset/XXX-RunXXXXXX-YYYYY-fragment.py
 ```
 {{</tab>}}
 
