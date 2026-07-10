@@ -105,6 +105,8 @@ If you want to use the LHE format in the event generation, you should do it befo
         value: "false"
 ```
 
+<!-- TODO: Write a step for the volume and block storage version of running the workflow -->
+
 ## 3. Submit the workflow
 
 Deploy the workflow to the cluster by running

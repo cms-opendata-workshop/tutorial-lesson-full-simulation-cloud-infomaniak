@@ -57,6 +57,20 @@ For example with 800 events per job the steps take about
 | PAT             |                         |
 | NANO            |                         |
 
+
+File size estimation (These numbers are rounded up a lot)
+
+| Step     | Size / 1 600 events | Total (32 jobia x 1600 = ~50k events) |
+| -------- | -------- | ---------------------------- |
+| GEN      | 200 MB   | 6 GB                         |
+| SIM      | 1 GB     | 40 GB                        |
+| DIGI2RAW | 3 GB     | 80 GB                        |
+| HLT      | 2 GB     | 70 GB                        |
+| RECO     | 500 MB   | 15 GB                        |
+| PAT      | 100 MB   | 3 GB                         |
+| NANO     | 50 MB    | 2 GB                         |
+
+
 ## So the total price would be...
 
 ### Example 1

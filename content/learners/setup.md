@@ -212,6 +212,8 @@ It is useful to save this command and with it the `access` and `secret` values, 
 
 In the CMS Open Data on Infomaniak tutorial's [Setup](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/learners/setup/) you installed the OpenRC file for your OpenStack access. To connect your terminal to the Object Storage, source that OpenRC file:
 
+<!-- TODO: sourcing the txt file didn't work in the new project, is this a recurring issue?  -->
+
 ```bash
 source PCP-XXXXXXX-openrc.txt
 ```
