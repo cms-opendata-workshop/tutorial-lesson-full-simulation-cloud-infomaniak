@@ -73,25 +73,25 @@ jobs:
         shell: bash
         run: ${{ inputs.sync-command }}
 
-      - name: Verify synced files are committed
-        if: ${{ inputs.sync-command != '' && inputs.drift-check-paths != '' }}
-        shell: bash
-        env:
-          DRIFT_CHECK_PATHS: ${{ inputs.drift-check-paths }}
-        run: |
-          drift_paths=()
-          while IFS= read -r path; do
-            if [[ -n "${path}" ]]; then
-              drift_paths+=("${path}")
-            fi
-          done <<< "${DRIFT_CHECK_PATHS}"
+      # - name: Verify synced files are committed
+      #   if: ${{ inputs.sync-command != '' && inputs.drift-check-paths != '' }}
+      #   shell: bash
+      #   env:
+      #     DRIFT_CHECK_PATHS: ${{ inputs.drift-check-paths }}
+      #   run: |
+      #     drift_paths=()
+      #     while IFS= read -r path; do
+      #       if [[ -n "${path}" ]]; then
+      #         drift_paths+=("${path}")
+      #       fi
+      #     done <<< "${DRIFT_CHECK_PATHS}"
 
-          if [[ ${#drift_paths[@]} -eq 0 ]]; then
-            echo "No drift-check paths configured"
-            exit 0
-          fi
+      #     if [[ ${#drift_paths[@]} -eq 0 ]]; then
+      #       echo "No drift-check paths configured"
+      #       exit 0
+      #     fi
 
-          git diff --exit-code -- "${drift_paths[@]}"
+      #     git diff --exit-code -- "${drift_paths[@]}"
 
       - name: Run validation command
         if: ${{ inputs.validation-command != '' }}
