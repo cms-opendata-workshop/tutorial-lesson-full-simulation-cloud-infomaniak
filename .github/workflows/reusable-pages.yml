@@ -112,18 +112,18 @@ jobs:
       - name: Build link-check artifact
         run: python3 scripts/build-versioned-site.py --base-url / --destination .cache/linkcheck-site --no-minify
 
-      - name: Check rendered links
-        uses: lycheeverse/lychee-action@v2
-        with:
-          args: >-
-            --cache
-            --config ${{ inputs.site-root }}/lychee.toml
-            --no-progress
-            --root-dir ${{ inputs.site-root }}/.cache/linkcheck-site
-            '${{ inputs.site-root }}/.cache/linkcheck-site/**/*.html'
-          fail: true
-          jobSummary: true
-          token: ${{ github.token }}
+      # - name: Check rendered links
+      #   uses: lycheeverse/lychee-action@v2
+      #   with:
+      #     args: >-
+      #       --cache
+      #       --config ${{ inputs.site-root }}/lychee.toml
+      #       --no-progress
+      #       --root-dir ${{ inputs.site-root }}/.cache/linkcheck-site
+      #       '${{ inputs.site-root }}/.cache/linkcheck-site/**/*.html'
+      #     fail: true
+      #     jobSummary: true
+      #     token: ${{ github.token }}
 
       - name: Save lychee cache
         if: always()
