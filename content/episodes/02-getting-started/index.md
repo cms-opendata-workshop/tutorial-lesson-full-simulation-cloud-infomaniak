@@ -105,9 +105,47 @@ If you want to use the LHE format in the event generation, you should do it befo
         value: "false"
 ```
 
-<!-- TODO: Write a step for the volume and block storage version of running the workflow -->
+## 3. Create a storage volume for the workflow
 
-## 3. Submit the workflow
+The workflow uses two kinds of cloud storage
+
+- Object Storage
+
+Permanent storage for the input and output files of the storage. Remain even if the processing cluster is killed. This storage container is easily accessed through a web interface and command line and makes uploading and downloading files simple.
+
+You created an object storage in the [Setup]({{< relref "/learners/setup" >}}) first step.
+
+- Block Storage
+
+The workflow needs a persistent volume, where it saves files from the intermediate steps. This is not a part of the processing nodes disk space. Therefore it is possible to simulate large datasets and save multiple gigabytes of files during the workflow without filling the disk space of the node itself.
+
+Create a volume with OpenStack
+
+```bash
+openstack volume create --description "Volume for simulation workflow steps" --size 50 my_volume
+```
+
+After the volume is created, the command will print information about the volume in the terminal. Copy and save the id.
+
+In the workflow repository's file `persistent_volume.yaml` replace the place holder with your id:
+
+```yaml
+csi:
+    driver: cinder.csi.openstack.org
+    ## EDIT BELOW: replace the placeholder 'xxxxxxxx-xxxx-xxxx' with your volumes UUID
+    volumeHandle: xxxxxxxx-xxxx-xxxx
+```
+
+Apply the volume configurations to your cluster:
+
+```bash
+kubectl apply -f persistent_volume.yaml
+kubectl apply -f persistent_volume_claim.yaml
+kubectl apply -f nfs.yaml
+```
+
+
+## 4. Submit the workflow
 
 Deploy the workflow to the cluster by running
 
@@ -126,3 +164,26 @@ During the first run, the PodInitializing might take a long time, because this i
 
 Once the workflow has run, the output of `argo get @latest -n argo` will look something like this: 
 ![Picture of a command line output, that has all the names of steps and check marks next to each one of them](image.png)
+
+## 5. After the workflow
+
+After a succesful run, always remember to delete the block storage volume. This is discussed in more detail in the [Computing Resources]({{< relref "/episodes/03-resources" >}}) chapter, but the volumes have a passive cost. This is why you should delete volumes whenever you are not using them. Especially when they are quite large in size.
+
+First disable all the processes using the workflow
+```bash
+argo delete @latest -n argo
+kubectl delete pvc workflow-pvc -n argo
+kubectl delete pv workflow-pv
+```
+
+Now the volume is ready for deleting.
+```bash
+openstack volume delete my_volume
+```
+
+You can check that the volume doesn't exist anymore by running all of these:
+```bash
+kubectl get pv
+kubectl get pvc -n argo
+openstack volume list
+```

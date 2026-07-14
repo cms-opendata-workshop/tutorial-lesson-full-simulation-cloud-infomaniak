@@ -71,7 +71,7 @@ In the Infomaniak [Manager Interface](https://manager.infomaniak.com) navigate t
 Under the title "Information" copy the "ID Public Cloud" and "ID Project". Insert their values to the `main.tf` in the `infomaniak_kaas.cluster` resource. 
 
 #### API Token
-For terraform to be able to edit your Infomaniak resources, it needs an API Token.
+For Terraform to be able to edit your Infomaniak resources, it needs an API Token.
 
 - Go to the Infomaniak [Manager Interface](https://manager.infomaniak.com)
 - Click on the Settings icon in the upper right corner

@@ -12,6 +12,10 @@ keypoints = ["The resources needed for your workflow depend on the number of eve
 To get to know the basics of cloud computing resources, please complete the [Setup]({{< relref "/learners/setup" >}}) and read more on [the Kubernetes website](https://kubernetes.io/docs/concepts/architecture/).
 {{< /callout >}}
 
+## This chapter is still a work in progress
+
+Until the problems with disk space and memory allocation have been solved, the resources needed can't be determined. Once these challenges are solved, this chapter will be updated.
+
 ## About the nodes
 
 One processing job should be a maximum of 800 events. The job takes at most 1 vCPU which means, that every node of 4 vCPUs can run 4 jobs simultaneously.
