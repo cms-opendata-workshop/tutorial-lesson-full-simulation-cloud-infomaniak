@@ -1,6 +1,6 @@
-baseURL = "https://cms-opendata-workshop.github.io/tutorial-lesson-full-simulation-cloud-infomaniak/"
-title = "Simulation Workflow Tutorial"
-languageCode = "en-us"
+baseURL = "https://example.github.io/example-lesson/"
+title = "Hugo Styles Starter Lesson"
+locale = "en-US"
 enableGitInfo = true
 disableKinds = ["taxonomy", "term", "RSS"]
 
@@ -35,12 +35,16 @@ disableKinds = ["taxonomy", "term", "RSS"]
     [markup.goldmark.renderer]
       unsafe = true
 
+[params.banner]
+  key = "hugo-styles-template-welcome-v2"
+  message = "This site contains replaceable starter content for a new lesson."
+
 [params.lesson]
-  title = "Example Lesson"
-  tagline = "A thin downstream lesson built on the shared hugo-styles module."
-  description = "Replace this metadata with your own tutorial details."
+  title = "Hugo Styles Starter Lesson"
+  tagline = "A small, adaptable example for writing your own lesson."
+  description = "Replace this sample with the topic, audience, and learning goals for your lesson."
   contact = "team@example.org"
-  repo = "https://github.com/cms-opendata-workshop/tutorial-lesson-full-simulation-cloud-infomaniak"
+  repo = "https://github.com/oer-particle-physics/hugo-styles-template"
   docsRepo = "https://github.com/oer-particle-physics/hugo-styles-template"
   editBranch = "main"
   copyrightHolder = "the authors"
@@ -147,7 +151,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
       type = "search"
   [[menus.main]]
     name = "GitHub"
-    url = "https://github.com/cms-opendata-workshop/tutorial-lesson-full-simulation-cloud-infomaniak"
+    url = "https://github.com/oer-particle-physics/hugo-styles-template"
     weight = 90
     [menus.main.params]
       icon = "github"
