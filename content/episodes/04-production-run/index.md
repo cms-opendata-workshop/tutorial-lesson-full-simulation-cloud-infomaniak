@@ -5,7 +5,7 @@ teaching = 15
 exercises = 10
 questions = ["How to do the processing with the larger amount of events?"]
 objectives = ["Run the production workflow and create the final dataset"]
-keypoints = [" "]
+keypoints = ["Learn to produce a production scale dataset"]
 +++
 
 ## Order a production size cluster
