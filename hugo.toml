@@ -1,5 +1,5 @@
-baseURL = "https://example.github.io/example-lesson/"
-title = "Hugo Styles Starter Lesson"
+baseURL = "https://cms-opendata-workshop.github.io/tutorial-lesson-full-simulation-cloud-infomaniak/"
+title = "Simulation Workflow Tutorial"
 locale = "en-US"
 enableGitInfo = true
 disableKinds = ["taxonomy", "term", "RSS"]
@@ -37,15 +37,15 @@ disableKinds = ["taxonomy", "term", "RSS"]
 
 [params.banner]
   key = "hugo-styles-template-welcome-v2"
-  message = "This site contains replaceable starter content for a new lesson."
+  message = "This tutorial is a work in progress. Some information on the site might change."
 
 [params.lesson]
-  title = "Hugo Styles Starter Lesson"
-  tagline = "A small, adaptable example for writing your own lesson."
-  description = "Replace this sample with the topic, audience, and learning goals for your lesson."
+  title = "Simulation Workflow Tutorial"
+  tagline = "Instructions on how to simulate a collision dataset using an automated workflow."
+  description = "Using Public Cloud resources, simulate your own dataset by running Argo Workflows on a Kubernetes cluster."
   contact = "team@example.org"
-  repo = "https://github.com/oer-particle-physics/hugo-styles-template"
-  docsRepo = "https://github.com/oer-particle-physics/hugo-styles-template"
+  repo = "https://github.com/cms-opendata-workshop/tutorial-lesson-full-simulation-cloud-infomaniak"
+  docsRepo = "https://github.com/cms-opendata-processing-tasks/FullSimulationArgoWorkflow"
   editBranch = "main"
   copyrightHolder = "the authors"
   licenseName = "CC BY 4.0"
@@ -106,7 +106,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
     pageRef = "/episodes"
     weight = 10
   [[menus.main]]
-    name = "Resources"
+    name = "Materials"
     identifier = "resources"
     weight = 30
   [[menus.main]]
@@ -151,7 +151,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
       type = "search"
   [[menus.main]]
     name = "GitHub"
-    url = "https://github.com/oer-particle-physics/hugo-styles-template"
+    url = "https://github.com/cms-opendata-workshop/tutorial-lesson-full-simulation-cloud-infomaniak"
     weight = 90
     [menus.main.params]
       icon = "github"
