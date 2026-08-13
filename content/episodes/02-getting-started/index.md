@@ -3,58 +3,240 @@ title = "First Run"
 weight = 20
 teaching = 10
 exercises = 15
-questions = ["How to make the workflow run first with fewer events?", "What preparations are needed before the run?"]
-objectives = ["Run a succesful workflow with a small number of events.", "Understand what is needed from the user in the workflow."]
-keypoints = ["Before the workflow you have to upload file(s) to the object storage, with which the workflow starts the processing.", "The workflow can be started with `argo submit -n argo` and monitored with `argo get @latest -n argo`"]
+questions = ["How to make the workflow run first with fewer events?", "What makes the workflow run in my environment?"]
+objectives = ["Complete setting up your cloud environment.", "Run a successful workflow with a small number of events on your cluster.", "Understand what is needed from the user when running the workflow."]
+keypoints = ["Before the workflow you have to upload the input file(s) to the object storage, with which the workflow starts the processing.", "After editing the workflow parameters, the workflow can be started with `argo submit -n argo` and monitored with `argo get @latest -n argo`"]
 +++
 
-{{< callout type="prereq" title="Prerequisites" >}}
-First, complete the [Setup]({{< relref "/learners/setup/" >}}) to get an Infomaniak Kubernetes cluster and Argo installed on it.
-{{< /callout >}}
+{{<callout type="prereq" title="Prerequisites">}}
+First, complete the [Setup]({{< relref "/learners/setup/" >}}) to get an Infomaniak account and order a cluster.
+Once your cluster is up and running, continue the setup process.
+{{</callout>}}
 
 
-## 1. Upload input files
+## 1. Connect your terminal to the cluster
 
-The workflow can start from two starting points, either generate events from a data fragment, or if you have already done the LHE GEN step, you can start from the root files from that step and go straight to the SIM step.
+Choose the tab with which method you ordered your cluster.
 
 {{<tabs>}}
-{{<tab name="GEN" selected="true">}}
+{{<tab name="Terraform" selected="true">}}
 
-Depending on if you want to create your own dataset or, for example, duplicate some set on the [Open Data Portal](https://opendata.cern.ch) you either write your own fragment or get an existing one from the internet.
-
-If you want to get a fragments file from the Open Data Portal, choose your dataset and go to the GEN steps production script. There should be a `curl` command, e.g.
-
-<!--Screenshots how to find fragment curl command-->
+Once the `terraform apply` has run, extract the Kubeconfig from your cluster by running:
 
 ```bash
-curl -s -k https://cms-pdmv-prod.web.cern.ch/mcm/public/restapi/requests/get_fragment/XXX-RunXXXXXX-YYYYY --retry 3 --create-dirs -o Configuration/GenProduction/python/XXX-RunXXXXXX-YYYYY-fragment.py
-[ -s Configuration/GenProduction/python/XXX-RunXXXXXX-YYYYY-fragment.py ]
+cd <path-to-your-working-dir>
+terraform output -raw kubeconfig > ./kubeconfig
 ```
 
-Once the fragments file is in your working directory, copy it to the cloud's object storage. You should be familiar with Infomaniak object storage after the [Setup](https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/)
-
+And set it to your device's environment variables:
 ```bash
-openstack object create your_storage XXX-RunXXXXXX-YYYYY-fragment.py --name FullSim/my-dataset/XXX-RunXXXXXX-YYYYY-fragment.py
+export KUBECONFIG=$(pwd)/kubeconfig
 ```
+
+Then you should be able to connect to your cluster:
+```bash
+kubectl cluster-info
+
+Kubernetes control plane is running at https://xxxxxxxx:30980
+CoreDNS is running at https://xxxxxxxx/api/v1/namespaces/kube-system/services/pck-xxxxxxx-addon-coredns:udp-53/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'
+```
+
+Check that your nodes are schedulable:
+```bash
+kubectl get nodes
+```
+
 {{</tab>}}
+{{<tab name="Web Interface">}}
 
-{{<tab name="LHE GEN">}}
+Once the [Manager Interface](https://manager.infomaniak.com) shows that your cluster is ready, download the Kubeconfig.
 
-LHE is the Les Houches standard event format for the event generation. If you want to use the LHE format, you should do the event generation before running the workflow. Then your workflow will skip the GEN step and go directly to SIM using the files you provide from the event generation.
-
-More information about event generation for the LHE format [here](https://fnallpc.github.io/generators/aio/index.html) or by reading the production scripts of the LHE GEN step of a simulated dataset in the [Open Data portal](https://opendata.cern.ch).
-
-The event generation produces root files, which you have to copy to the object storage. Let's say, the root files are in your working directory in a folder called `LHEGEN`.
+- From the sidebar navigate to Cloud Computing > Kubernetes and select your cluster
+- In this view, you will see a download link "Kubeconfig" in the title box. Click on it and move the file to your working directory:
 
 ```bash
-swift upload your_storage GEN/ --object-name FullSim/my-dataset/GEN/
+mv <path-to-downloads>/pck-xxxx-kubeconfig <path-to-working-dir>
+cd <path-to-working-dir>
 ```
+
+Set your Kubeconfig as an environment variable:
+
+```bash
+export KUBECONFIG=$(pwd)/pck-xxxx-kubeconfig
+```
+
+Then you should be able to connect to your cluster:
+```bash
+kubectl cluster-info
+
+Kubernetes control plane is running at https://xxxxxxxx:30980
+CoreDNS is running at https://xxxxxxxx/api/v1/namespaces/kube-system/services/pck-xxxxxxx-addon-coredns:udp-53/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'
+```
+
+Check that your nodes are schedulable:
+```bash
+kubectl get nodes
+```
+
+##### Create Block Storage volumes
+
+When ordering the cluster from the web interface, the volumes have to be ordered seperately from the terminal:
+
+```bash
+openstack volume create --description "Volume for computing node 1" --size 15 volume_1
+openstack volume create --description "Volume for computing node 2" --size 15 volume_2
+```
+
 
 {{</tab>}}
 {{</tabs>}}
 
+## 2. Enable Argo for the cluster
+
+First, create a namespace for Argo:
+```bash
+kubectl create ns argo
+```
+Install Argo Workflows to the cluster:
+```bash
+kubectl apply -n argo --server-side -f https://github.com/argoproj/argo-workflows/releases/download/v4.0.1/install.yaml
+```
+Setup the Argo service account etc. by running the configurations in the manifests folder:
+```bash
+kubectl apply -f manifests/
+```
+
+{{<callout type="note" title="Metrics Server">}}
+If you want to be able to inspect the memory and CPU usage of your cluster you have to clone another repository and run the yaml that configures the Metrics Server:
+```bash
+git clone https://github.com/cms-opendata-processing-tasks/WorkflowUtils.git
+cd WorkflowUtils/memory_scan
+
+kubectl apply -f components.yaml
+```
+
+After this you can run `kubectl top pods -n argo` or use on of the helper scripts in that repository, such as `./start_memory_scan.sh`.
+
+If you want to use the latter, the instructions on how to start using the script are in the repository's [README.md](https://github.com/cms-opendata-processing-tasks/WorkflowUtils/blob/main/README.md) to set up the memory scanning script.
+{{</callout>}}
+
+## 3. Give S3 credentials to the cluster
+
+For the workflow to be able to write to the OpenStack area, the s3-credentials are set as a kubectl secret. Here you will need the `access` and `secret` values you saved in the setting up chapter.
+
+```bash
+kubectl create secret generic s3-credentials \
+  --from-literal=S3_ACCESS_KEY_ID='<the value of the access field>' \
+  --from-literal=S3_SECRET_ACCESS_KEY='<the value of the secret field>' \
+  -n argo
+```
+
+It is useful to save this command and with it the `access` and `secret` values, to be able to use the same credentials for future clusters as well.
+
+## 4. Configure the Persistent Volume Claims
+
+For the workflow to be able to attach to the volumes, there needs to be a persistent volume and a persistent volume claim for each of the volumes.
+
+First, get the block storage volumes' UUID by running
+
+```bash
+openstack volume list
+```
+
+Save the `ID` field value from each of the volumes and add it in the file `persistent_volume.yaml` to the part marked:
+
+```yaml
+## EDIT BELOW: replace the placeholder 'xxxxxxxx-xxxx-xxxx' with your volumes UUID
+    volumeHandle: xxxxxxxx-xxxx-xxxx
+```
+
+Make sure that you put volume_1 UUID in the place of pv-1, volume_2 UUID in pv-2, etc. This helps with keeping track of where possible technical issues actually lie.
+
+Also check that there is a persistent volume claim in the file `persistent_volume_claim.yaml` for each of the volumes in the previous file.
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-1
+  namespace: argo
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: manual
+  volumeName: pv-1
+```
+
+Finally, apply both of these files in this order:
+
+```bash
+kubectl apply -f persistent_volume.yaml
+kubectl apply -f persistent_volume_claim.yaml
+```
+
+## 5. Upload data input files to cloud storage
+
+The workflow can begin processing from two starting points, either generate events from only a data fragment in the GEN step, or use both the data fragment and a gridpack if you are using the LHE format. All of these are uploaded into a input folder in the Object Storage.
+
+##### Fragment file
+
+To start the workflow you need to have fragment file written in Python. Exemplary fragments you can find, for instance, in the [Open Data Portal](https://opendata.cern.ch).
+
+On the front page, there is a search bar and some hyperlinks under them. Click on the datasets to start a general search of datasets.
+
+
+Filter your search to simulated CMS datasets from the year 2016:
+![Screenshot of the search results when searching for CMS simulated data on Run 2016 in the CERN Open Data portal](image-2.png)
+
+Select one of these datasets and scroll down. There you will find the details of each simulation step and the configurations and scripts used for creating this dataset.
+
+![Screenshot of a dataset page with the title "How were these data generated", followed by the steps GEN, SIM etc. and their details.](image-1.png)
+
+By clicking on the "Generator parameters" preview, or "Hadronizer parameters" preview if the dataset was generated using LHE, you can read the fragment this dataset is based on.
+
+If you want to test the workflow or otherwise re-process a fragment, you can copy it on your device and use it as an input file for your workflow.
+
+To copy the fragment click the "link" next to the "Generator parameters".
+
+When you have your fragment ready, either copied or self-written, upload it to the cloud storage:
+
+```bash
+openstack object create mystorage <name-of-your-fragment>.py --name FullSim/my-dataset/input/<name-of-your-fragment>.py
+```
+
+##### Gridpack
+
+If you are using LHE format for your GEN step, you also need to input a gridpack. Instructions on how to produce a gridpack can be found in the [CMS internal documentation](https://cms-generators.docs.cern.ch/how-to-produce-gridpacks/)
+
+Gridpack is generated from data cards. You can find examples of cards, by navigating to a dataset in the Open Data Portal in the same way as with the fragment, but now inspect the files ending in "card.dat" under the GEN step.
+
+Alternatively, you can copy an existing gridpack. For example, find a dataset on the Open Data Portal that uses LHE format and read the fragment to get the CVMFS path of the gridpack used in that dataset. Follow [these instructions](https://cvmfs.readthedocs.io/en/stable/cpt-quickstart.html) to mount CVMFS to your system and copy the gridpack from there. The workflow uses the CMSSW version 10_6_30 for the event generation step, which means that the gridpack used has CMSSW_10_6_0 in the name. This means that the gridpack is compatible with the container's architecture. The workflow also assumes that the gridpack is for version 10_6_0, and has 10_6_0 hard coded in file names for example.
+
+{{<callout type="note" title="Path to gridpack in fragment file">}}
+It is important to correct the gridpack path your fragment declares for the LHE producer is correct. The workflow moves all gridpacks to `/code/CMSSW_10_6_30/src`. Edit the fragment file before uploading it, such that the LHE producer block looks like this:
+
+```python
+externalLHEProducer = cms.EDProducer("ExternalLHEProducer",
+    args = cms.vstring('/code/CMSSW_10_6_30/src/<gridpack-name>_slc7_amd64_gcc700_CMSSW_10_6_30_tarball.tar.xz')
+)
+```
+{{</callout>}}
+
+Once you have a gridpack, upload it to the same input folder in your Object Storage:
+
+```bash
+openstack object create mystorage <gridpack-name>_slc7_amd64_gcc700_CMSSW_10_6_0_tarball.tar.xz --name FullSim/my-dataset/input/<gridpack-name>_slc7_amd64_gcc700_CMSSW_10_6_0_tarball.tar.xz
+```
+
 {{<callout type="note" title="File upload not working?">}}
-If the `openstack` and `swift` commands are not working, check if you installed openstack tools in a Python virtual environment in the [Setup]({{< relref "learners/setup" >}}).
+If the `openstack` and `swift` commands are not working, check if you installed openstack tools in a Python virtual environment in the [Setup]({{< relref "/learners/setup" >}}).
 
 ```bash
 source venv/bin/activate
@@ -69,92 +251,112 @@ source PCP-XXXXXXX-openrc.sh
 {{</callout>}}
 
 
-## 2. Edit the parameters
+## 6. Edit the parameters
 
 As said in the introduction, the `cms-simulation-process/run-pp-simulation.yaml` file includes some parameters that need to be updated to each user's situation. Open the yaml file with your preferred editor and edit the commented parameters.
 
 ```yaml
-  arguments:
+    arguments:
     parameters:
-      ### EDIT BELOW: replace the placeholder 'yourstorage' with your object storage name
+      ### EDIT BELOW: replace the placeholder 'mystorage' with the name of your object storage
       - name: bucket
-        value: yourstorage
+        value: mystorage
       - name: dataName
-        value: "my-dataset"
-      ### EDIT BELOW: replace the placeholder 'fragments.py' with the file name of your fragment
-      - name: fragFileName
-        value: "fragments.py"
+        value: "dataName"
+      ### EDIT BELOW: replace the placeholder 'fragment.py' with the file name of your fragment
+      - name: inputFileName
+        value: "fragment.py"
+      ### EDIT BELOW: replace the placeholder with the name of your gridpack before the architecture, i.e. slc7 etc.
+      - name: cardName
+        value: "ExampleProcess_taunu_heavy_NLO_M700"
       ### EDIT BELOW: replace the placeholder '10' with the amount of events you want to process
       - name: totEvents
         value: 10
-      ### EDIT BELOW: replace the placeholder '1' with 4 times the amount of nodes on your cluster e.g. 4 times 2 nodes --> nJobs is 8
-      - name: nJobs
-        value: 1
+      - name: jobsPerNode
+        value: 2 # The workflow has been tested with nodes that only fit 2 jobs per node
+      ### EDIT BELOW: replace the placeholder '2' with the number of nodes in your cluster
+      - name: nNodes
+        value: 2
       ### EDIT BELOW: replace the placeholder '2016' with the year of the run you are simulating
       - name: runYear
         value: "2016"
 ```
 
 
-If you want to use the LHE format in the event generation, you should do it before the workflow with resources you have available. Les Houches event generation is not included in this tutorial. Because the event generation is done elsewhere, for these situations, the boolean `startFromSim` should be set to true.
+If you want to use the LHE format in the event generation, you should set the boolean `useLHE` true. This tells the workflow to run the steps specific for the LHE
 
 
 ```yaml
-      ### EDIT BELOW: If you have already completed the LHE GEN step change the boolean to true
-      - name: startFromSim
-        value: "false"
+### EDIT BELOW: If you are using the LHE format, set this to true to run the LHE-GEN
+      - name: useLHE
+        value: true
 ```
 
-## 3. Create a storage volume for the workflow
+The workflow has each node attach to its own volume, since the Network File System is not yet available on Infomaniak platforms. Since only one node can write to a volume at a time and there are two jobs per node, you should make sure, that the jobs that use the same volume get assigned to the same node.
 
-The workflow uses two kinds of cloud storage
+This can be done by fetching the node names on your cluster and setting them in the parameter called `nodeNames`.
 
-- Object Storage
-
-Permanent storage for the input and output files of the storage. Remain even if the processing cluster is killed. This storage container is easily accessed through a web interface and command line and makes uploading and downloading files simple.
-
-You created an object storage in the [Setup]({{< relref "/learners/setup" >}}) first step.
-
-- Block Storage
-
-The workflow needs a persistent volume, where it saves files from the intermediate steps. This is not a part of the processing nodes disk space. Therefore it is possible to simulate large datasets and save multiple gigabytes of files during the workflow without filling the disk space of the node itself.
-
-Create a volume with OpenStack
-
+Run this command to fetch the node names:
 ```bash
-openstack volume create --description "Volume for simulation workflow steps" --size 50 my_volume
+kubectl get nodes -o jsonpath='{range .items[*]}{"{\"nodeName\":\""}{.metadata.name}{"\"}"}{","}{end}' | sed 's/,$//' | sed "s/\"/'/g"
 ```
 
-After the volume is created, the command will print information about the volume in the terminal. Copy and save the id.
+Copy the output json to the workflow:
+```yaml
+### EDIT BELOW: Set here the list of your node names, i.e. the output of kubectl get nodes -o jsonpath='{range .items[*]}{"{\"nodeName\":\""}{.metadata.name}{"\"}"}{","}{end}' | sed 's/,$//' | sed "s/\"/'/g"
+      - name: nodeNames
+        value: [{'nodeName':'pck-xxxxxxx'},{'nodeName':'pck-xxxxxxx'}]
+```
 
-In the workflow repository's file `persistent_volume.yaml` replace the place holder with your id:
+With the names known, the parallelised jobs can be assigned to specific nodes using the `nodeSelector` feature.
+
+
+## 7. Mount the volumes in the workflow
+
+Each of the nodes attach to a different volume. All of these volumes have to be mounted in the beginning of the workflow yaml file.
+
+If you are using more than two nodes, you should add volume3 and volume4 and so on, similarly under the initiation of the volume1 and volume2:
 
 ```yaml
-csi:
-    driver: cinder.csi.openstack.org
-    ## EDIT BELOW: replace the placeholder 'xxxxxxxx-xxxx-xxxx' with your volumes UUID
-    volumeHandle: xxxxxxxx-xxxx-xxxx
+spec:
+  entrypoint: cms-full-sim
+  serviceAccountName: argo-service-account
+  volumes:
+    - name: volume1
+      persistentVolumeClaim:
+        claimName: pvc-1
+    - name: volume2
+      persistentVolumeClaim:
+        claimName: pvc-2
 ```
 
-Apply the volume configurations to your cluster:
+Add a mention of your additional volumes to the final `merge-result-files` step as well:
 
-```bash
-kubectl apply -f persistent_volume.yaml
-kubectl apply -f persistent_volume_claim.yaml
-kubectl apply -f nfs.yaml
+```yaml
+- name: merge-result-files-template
+  ...
+  script:
+          image: gitlab-registry.cern.ch/cms-cloud/root-vnc:latest
+          command: [bash]
+          volumeMounts:
+            - name: volume1
+              mountPath: /data/1
+            - name: volume2
+              mountPath: /data/2
+            # - name: volume3
+            #   mountPath: /data/3
 ```
 
+## 8. Submit the workflow
 
-## 4. Submit the workflow
-
-Deploy the workflow to the cluster by running
+Finally, you are ready to deploy the workflow to the cluster by running:
 
 ```bash
-cd /path/to/FullSimulationArgoWorkflow
+cd <path-to-working-dir>
 argo submit -n argo cms-simulation-process/run-pp-simulation.yaml
 ```
 
-Inspect the workflow status with
+Inspect the workflow status with:
 
 ```bash
 argo get @latest -n argo
@@ -163,27 +365,67 @@ argo get @latest -n argo
 During the first run, the PodInitializing might take a long time, because this is the first time the container images are pulled to the cluster's nodes.
 
 Once the workflow has run, the output of `argo get @latest -n argo` will look something like this: 
+
 ![Picture of a command line output, that has all the names of steps and check marks next to each one of them](image.png)
 
-## 5. After the workflow
+##### If a job fails
 
-After a succesful run, always remember to delete the block storage volume. This is discussed in more detail in the [Computing Resources]({{< relref "/episodes/03-resources" >}}) chapter, but the volumes have a passive cost. This is why you should delete volumes whenever you are not using them. Especially when they are quite large in size.
+If one of the jobs fail, you might notice that generates another job. This is due to the `retryStrategy`, which determines that the job retries itself maximum of 3 times if the fail occurs during the data processing. For example, if the node runs out of memory because of too many jobs parallel, retrying usually helps.
 
-First disable all the processes using the workflow
+If the job does not retry, it is most likely because it failed before the `run-process-job` step. In that case, inspect the pod by first getting the pod name with `argo get @latest -n argo`.
+
+Then use it in one of these commands:
+
 ```bash
-argo delete @latest -n argo
-kubectl delete pvc workflow-pvc -n argo
-kubectl delete pv workflow-pv
+kubectl logs -n argo <pod-name>
 ```
 
-Now the volume is ready for deleting.
 ```bash
-openstack volume delete my_volume
+kubectl describe -n argo pod/<pod-name>
+```
+
+The latter command is better for the pods that are stuck in PodInitializing step, since they do not produce logs while stuck in that state.
+
+## 9. After the workflow
+
+After a succesful run, always remember to delete the block storage volume. It is discussed in more detail in the [Computing Resources]({{< relref "/episodes/03-resources" >}}) chapter, but the volumes have a passive cost. Therefore you should delete volumes whenever you are not using them. Especially when they are quite large in size or you have several of them.
+
+First disable all the processes using the workflow:
+```bash
+argo delete @latest -n argo
+```
+
+{{<callout type="note" title="Always delete your workflows">}}
+It is good practice to delete your workflow before running another one. This way, no useless pods are left hanging around in your environment and, for example, the pods won't keep your volumes occupied while another workflow runs.
+{{</callout>}}
+
+Delete all the persistent volumes and persistent volume claims:
+
+```bash
+kubectl delete pvc -n argo pvc-1 pvc-2
+```
+
+```bash
+kubectl delete pv pv-1 pv-2
 ```
 
 You can check that the volume doesn't exist anymore by running all of these:
 ```bash
 kubectl get pv
 kubectl get pvc -n argo
-openstack volume list
 ```
+
+
+When these commands return "No resources found" the volumes and cluster are ready for deleting.
+
+If you use Terraform with admin privileges:
+```bash
+terraform destroy
+```
+
+Or you can delete them manually by running
+```bash
+openstack volume delete volume_1
+openstack volume delete volume_2
+```
+and after that deleting the cluster from the [web interface](https://manager.infomaniak.com/).

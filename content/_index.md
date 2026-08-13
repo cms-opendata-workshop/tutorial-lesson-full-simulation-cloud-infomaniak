@@ -30,21 +30,21 @@ Learn to run a CMS data processing workflow and simulate your own dataset using 
 {{< hextra/feature-grid cols="3" >}}
 {{< hextra/feature-card
   title="Setup your environment"
-  subtitle="First follow the CMS Open Data on Infomaniak -tutorial"
+  subtitle="Install Kubectl, Argo, the workflow code and other essentials"
   icon="adjustments"
-  link="https://cms-opendata-workshop.github.io/tutorial-lesson-cloud-processing-infomaniak/learners/setup/"
+  link="learners/setup"
 >}}
 {{< hextra/feature-card
   title="Kubernetes documentation"
-  subtitle="Get to know more about cluster architecture on the Kubernetes website."
+  subtitle="Get to know more about cluster architecture on the Kubernetes website"
   icon="book-open"
   link="https://kubernetes.io/docs/home/"
 >}}
 {{< hextra/feature-card
-  title="First steps"
-  subtitle="After setting up your environment, do the first steps here"
+  title="First run"
+  subtitle="After setting up your environment, do the first run of the workflow"
   icon="chevron-double-right"
-  link="learners/setup/"
+  link="episodes/02-getting-started"
 >}}
 {{< /hextra/feature-grid >}}
 

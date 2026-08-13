@@ -130,21 +130,6 @@ disableKinds = ["taxonomy", "term", "RSS"]
     pageRef = "/external-links"
     weight = 25
   [[menus.main]]
-    name = "Reference"
-    parent = "resources"
-    pageRef = "/reference"
-    weight = 30
-  [[menus.main]]
-    name = "Glossary"
-    parent = "resources"
-    pageRef = "/glossary"
-    weight = 40
-  [[menus.main]]
-    name = "Profiles"
-    parent = "resources"
-    pageRef = "/profiles"
-    weight = 50
-  [[menus.main]]
     name = "All Images"
     parent = "resources"
     pageRef = "/extract-all-images"

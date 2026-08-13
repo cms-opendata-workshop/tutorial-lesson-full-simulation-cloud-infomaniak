@@ -35,10 +35,6 @@ disableKinds = ["taxonomy", "term", "RSS"]
     [markup.goldmark.renderer]
       unsafe = true
 
-[params.banner]
-  key = "hugo-styles-template-welcome-v2"
-  message = "This tutorial is a work in progress. Some information on the site might change."
-
 [params.lesson]
   title = "Simulation Workflow Tutorial"
   tagline = "Instructions on how to simulate a collision dataset using an automated workflow."
@@ -106,7 +102,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
     pageRef = "/episodes"
     weight = 10
   [[menus.main]]
-    name = "Materials"
+    name = "Summaries"
     identifier = "resources"
     weight = 30
   [[menus.main]]
@@ -124,21 +120,6 @@ disableKinds = ["taxonomy", "term", "RSS"]
     parent = "resources"
     pageRef = "/external-links"
     weight = 25
-  [[menus.main]]
-    name = "Reference"
-    parent = "resources"
-    pageRef = "/reference"
-    weight = 30
-  [[menus.main]]
-    name = "Glossary"
-    parent = "resources"
-    pageRef = "/glossary"
-    weight = 40
-  [[menus.main]]
-    name = "Profiles"
-    parent = "resources"
-    pageRef = "/profiles"
-    weight = 50
   [[menus.main]]
     name = "All Images"
     parent = "resources"
