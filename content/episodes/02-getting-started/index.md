@@ -1,8 +1,8 @@
 +++
 title = "First Run"
 weight = 20
-teaching = 10
-exercises = 15
+teaching = 15
+exercises = 20
 questions = ["How to make the workflow run first with fewer events?", "What makes the workflow run in my environment?"]
 objectives = ["Complete setting up your cloud environment.", "Run a successful workflow with a small number of events on your cluster.", "Understand what is needed from the user when running the workflow."]
 keypoints = ["Before the workflow you have to upload the input file(s) to the object storage, with which the workflow starts the processing.", "After editing the workflow parameters, the workflow can be started with `argo submit -n argo` and monitored with `argo get @latest -n argo`"]
