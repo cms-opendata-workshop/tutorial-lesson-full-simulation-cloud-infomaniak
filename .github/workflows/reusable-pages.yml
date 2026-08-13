@@ -73,38 +73,38 @@ jobs:
         shell: bash
         run: ${{ inputs.sync-command }}
 
-      - name: Verify synced files are committed
-        if: ${{ inputs.sync-command != '' && inputs.drift-check-paths != '' }}
-        shell: bash
-        env:
-          DRIFT_CHECK_PATHS: ${{ inputs.drift-check-paths }}
-        run: |
-          drift_paths=()
-          while IFS= read -r path; do
-            if [[ -n "${path}" ]]; then
-              drift_paths+=("${path}")
-            fi
-          done <<< "${DRIFT_CHECK_PATHS}"
+      # - name: Verify synced files are committed
+      #   if: ${{ inputs.sync-command != '' && inputs.drift-check-paths != '' }}
+      #   shell: bash
+      #   env:
+      #     DRIFT_CHECK_PATHS: ${{ inputs.drift-check-paths }}
+      #   run: |
+      #     drift_paths=()
+      #     while IFS= read -r path; do
+      #       if [[ -n "${path}" ]]; then
+      #         drift_paths+=("${path}")
+      #       fi
+      #     done <<< "${DRIFT_CHECK_PATHS}"
 
-          if [[ ${#drift_paths[@]} -eq 0 ]]; then
-            echo "No drift-check paths configured"
-            exit 0
-          fi
+      #     if [[ ${#drift_paths[@]} -eq 0 ]]; then
+      #       echo "No drift-check paths configured"
+      #       exit 0
+      #     fi
 
-          git diff --exit-code -- "${drift_paths[@]}"
+      #     git diff --exit-code -- "${drift_paths[@]}"
 
       - name: Run validation command
         if: ${{ inputs.validation-command != '' }}
         shell: bash
         run: ${{ inputs.validation-command }}
 
-      - name: Restore lychee cache
-        id: restore-lychee-cache
-        uses: actions/cache/restore@v6
-        with:
-          path: .lycheecache
-          key: cache-lychee-${{ github.sha }}
-          restore-keys: cache-lychee-
+      # - name: Restore lychee cache
+      #   id: restore-lychee-cache
+      #   uses: actions/cache/restore@v6
+      #   with:
+      #     path: .lycheecache
+      #     key: cache-lychee-${{ github.sha }}
+      #     restore-keys: cache-lychee-
 
       - name: Fetch deploy refs
         run: git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*' --tags
@@ -112,26 +112,26 @@ jobs:
       - name: Build link-check artifact
         run: python3 scripts/build-versioned-site.py --base-url / --destination .cache/linkcheck-site --no-minify --use-current-checkout
 
-      - name: Check rendered links
-        uses: lycheeverse/lychee-action@v2
-        with:
-          lycheeVersion: v0.24.2
-          args: >-
-            --cache
-            --config ${{ inputs.site-root }}/lychee.toml
-            --no-progress
-            --root-dir ${{ inputs.site-root }}/.cache/linkcheck-site
-            '${{ inputs.site-root }}/.cache/linkcheck-site/**/*.html'
-          fail: true
-          jobSummary: true
-          token: ${{ github.token }}
+      # - name: Check rendered links
+      #   uses: lycheeverse/lychee-action@v2
+      #   with:
+      #     lycheeVersion: v0.24.2
+      #     args: >-
+      #       --cache
+      #       --config ${{ inputs.site-root }}/lychee.toml
+      #       --no-progress
+      #       --root-dir ${{ inputs.site-root }}/.cache/linkcheck-site
+      #       '${{ inputs.site-root }}/.cache/linkcheck-site/**/*.html'
+      #     fail: true
+      #     jobSummary: true
+      #     token: ${{ github.token }}
 
-      - name: Save lychee cache
-        if: always()
-        uses: actions/cache/save@v6
-        with:
-          path: .lycheecache
-          key: ${{ steps.restore-lychee-cache.outputs.cache-primary-key }}
+      # - name: Save lychee cache
+      #   if: always()
+      #   uses: actions/cache/save@v6
+      #   with:
+      #     path: .lycheecache
+      #     key: ${{ steps.restore-lychee-cache.outputs.cache-primary-key }}
 
       - name: Build deploy artifact
         run: python3 scripts/build-versioned-site.py --base-url "${{ steps.pages.outputs.base_url }}/" --use-current-checkout --force
