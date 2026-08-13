@@ -346,7 +346,7 @@ kubectl describe -n argo <pod-name>
 
 Once the workflow has run, it saves the output files in to OpenStack Object Storage. There are three types of files as output: MiniAOD, NanoAOD and the large result files. The MiniAOD and NanoAOD are saved from each parallel job into their own folders in the Object Storage container. Finally the large result files are a product of the `merge-result-files` step, which simply combines the small NanoAOD files into fewer, maximum 2 GB files, which are easier to move around.
 
-The storage and its files can be accessed from either the command line or from the OpenStack [web interface](api.pub2.infomaniak.cloud).
+The storage and its files can be accessed from either the command line or from the OpenStack [web interface](https://api.pub2.infomaniak.cloud).
 
 {{<tabs>}}
 {{<tab name="Terminal" selected="true">}}
