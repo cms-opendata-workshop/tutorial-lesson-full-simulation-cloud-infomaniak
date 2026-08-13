@@ -1,11 +1,11 @@
 +++
 title = "Production Run"
 weight = 40
-teaching = 15
-exercises = 10
+teaching = 20
+exercises = 35
 questions = ["How to do the processing with the larger amount of events?"]
-objectives = ["Run the production workflow and create the final dataset"]
-keypoints = ["Learn to produce a production scale dataset.", "Understand how to run jobs again in a smaller scale if only part of the workflow fails."]
+objectives = ["Order a production size cluster from the Infomaniak Public Cloud", "Run the production workflow and create the final dataset"]
+keypoints = ["To run a large number of events, the cluster needs a lot of disk space in the form of volumes.", "In most cases the processing takes roughly one working day, after which the dataset can be downloaded from OpenStack Object Storage."]
 +++
 
 {{<callout type="prereq" title="Infomaniak resource limits need to be expanded">}}
@@ -297,7 +297,7 @@ If not, upload it from your working directory:
 openstack object create mystorage <name-of-your-fragment>.py --name FullSim/my-dataset/input/<name-of-your-fragment>.py
 ```
 
-Remember to fix the fragment file name to the `FullSimulationArgoWorkflow/cms-simulation-process/run-pp-simulation.yaml` parameters!
+Remember to have the correct `inputFileName` `run-pp-simulation.yaml` file's parameters!
 {{</tab>}}
 {{<tab name="LHE GEN">}}
 
@@ -346,7 +346,7 @@ kubectl describe -n argo <pod-name>
 
 Once the workflow has run, it saves the output files in to OpenStack Object Storage. There are three types of files as output: MiniAOD, NanoAOD and the large result files. The MiniAOD and NanoAOD are saved from each parallel job into their own folders in the Object Storage container. Finally the large result files are a product of the `merge-result-files` step, which simply combines the small NanoAOD files into fewer, maximum 2 GB files, which are easier to move around.
 
-The storage and its files can be accessed from either the command line or from the OpenStack [web interface](https://api.pub2.infomaniak.cloud).
+The storage and its files can be accessed from either the command line or from the OpenStack [web interface](https://api.pub2.infomaniak.cloud), where you sign in with the PCU-XXXXX username from the OpenStack Access.
 
 {{<tabs>}}
 {{<tab name="Terminal" selected="true">}}

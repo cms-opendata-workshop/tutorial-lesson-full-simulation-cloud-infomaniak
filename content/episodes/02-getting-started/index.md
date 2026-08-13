@@ -5,7 +5,7 @@ teaching = 15
 exercises = 20
 questions = ["How to make the workflow run first with fewer events?", "What makes the workflow run in my environment?"]
 objectives = ["Complete setting up your cloud environment.", "Run a successful workflow with a small number of events on your cluster.", "Understand what is needed from the user when running the workflow."]
-keypoints = ["Before the workflow you have to upload the input file(s) to the object storage, with which the workflow starts the processing.", "After editing the workflow parameters, the workflow can be started with `argo submit -n argo` and monitored with `argo get @latest -n argo`"]
+keypoints = ["The workflow is run in an environment with nodes, containers and volumes.", "Before the workflow you have to upload the input file(s) to storage and create different access credentials for the nodes to communicate with the storage.", "After editing the workflow parameters, the workflow can be started with `argo submit -n argo` and monitored with `argo get @latest -n argo`"]
 +++
 
 {{<callout type="prereq" title="Prerequisites">}}
@@ -205,6 +205,8 @@ If you want to test the workflow or otherwise re-process a fragment, you can cop
 
 To copy the fragment click the "link" next to the "Generator parameters".
 
+Most likely the user wants to process a dataset of their own. For this purpose you have to write the fragment by yourself and this fragment defines what kind of dataset the workflow produces. The fragments on the Open Data portal are useful as examples though.
+
 When you have your fragment ready, either copied or self-written, upload it to the cloud storage:
 
 ```bash
@@ -366,7 +368,7 @@ During the first run, the PodInitializing might take a long time, because this i
 
 Once the workflow has run, the output of `argo get @latest -n argo` will look something like this: 
 
-![Picture of a command line output, that has all the names of steps and check marks next to each one of them](image.png)
+![Picture of a command line output, that has all the names of steps and check marks next to each one of them](image-7.png)
 
 ##### If a job fails
 
@@ -389,6 +391,8 @@ The latter command is better for the pods that are stuck in PodInitializing step
 ## 9. After the workflow
 
 After a succesful run, always remember to delete the block storage volume. It is discussed in more detail in the [Computing Resources]({{< relref "/episodes/03-resources" >}}) chapter, but the volumes have a passive cost. Therefore you should delete volumes whenever you are not using them. Especially when they are quite large in size or you have several of them.
+
+If the workflow succeeded, the MiniAOD, NanoAOD and result files are stored in the Object Storage. Therefore they wont be affected from the deletion of the volumes and the cluster.
 
 First disable all the processes using the workflow:
 ```bash

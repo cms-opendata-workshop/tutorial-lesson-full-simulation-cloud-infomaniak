@@ -1,9 +1,9 @@
 +++
 title = "Introduction"
 weight = 10
-teaching = 5
-questions = ["What does this workflow do?", "Who is this workflow for?"]
-objectives = ["Get an overview of what steps the workflow contains."]
+teaching = 10
+questions = ["How does the workflow create a dataset from a data fragment?", "Who is this workflow for?"]
+objectives = ["Get an overview of what steps the workflow contains.", "Understand what tools are used for the actual data processing."]
 keypoints = ["This workflow runs automatically the steps of proton-proton collision dataset simulation with 2016 run conditions.", "Because the data processing requires a lot of resources, in this tutorial we use public cloud providers.", "The workflow is customised to your needs by editing the parameters in the workflow yaml file."]
 +++
 
@@ -75,7 +75,7 @@ More information about running and editing the yaml files is in the upcoming cha
 
 ## Input and output
 
-There are different ways of inputting the starting data to the workflow. You can either simply upload a fragment, but if you are using the Les Houches event format, you also need to upload the cards to generate the gridpack.
+There are different ways of inputting the starting data to the workflow. You can either simply upload a fragment, but if you are using the Les Houches event format, you also need to upload the cards to generate the gridpack. Currently, in August 2026, the gridpack generation step is not functional, so you should give an existing gridpack as the input file for the time being.
 
 
 As an output the workflow sets three types of files in the object storage: first the MiniAOD format data files, then the NanoAOD and finally the output files, which are just NanoAOD but merged into larger and fewer files.

@@ -22,16 +22,21 @@ One processing job should be a maximum of 1600 events. This is because the DIGI2
 
 A single job uses a lot of memory, so on a node with 16 GB RAM, there can only be two jobs at a time. The job also requires ~1 vCPU. Unfortunately, Infomaniak does not currently offer 2 vCPU 16 GB RAM nodes, so we will be using the 4 vCPU 16 GB RAM nodes.
 
+{{<callout type="note" title="Extra">}}
+The workflow file `run-pp-simulation.yaml` contains resource request statements, that define how much resources at least have to be allocated for that job. By editing these request amounts, you can control how the jobs get assigned. For example, on a 4 vCPU node, there can only be one job if it requests at least 3 vCPUs
+{{</callout>}}
+
 Next, calculate the minimum amount of nodes you will need for your final workflow using the following formulas:
 
 $$
 \begin{align*}
-\text{number of jobs} = \frac{\text{events in total}}{1600} \\
+\text{number of jobs} = \frac{\text{events in total}}{1600} \\ \\
 \text{number of nodes} = \frac{\text{number of jobs}}{2}
 \end{align*}
 $$
 
 If you want the workflow to finish faster, you can assign less events per job and order more nodes, as long as one node only has max. 2 jobs at a time.
+
 
 {{<callout type="note" title="Expand the limits of the Public Cloud">}}
 As default, the Infomaniak Public Cloud has limits that do not allow you to make a cluster with more than 10 nodes with a maximum of 64 GB RAM between all of them.
@@ -56,8 +61,8 @@ Rough file size estimation per step, if the files contain 1600 events:
 | DIGI2RAW | 3 GB                |
 | HLT      | 2 GB                |
 | RECO     | 500 MB              |
-| PAT      | 100 MB              |
-| NANO     | 50 MB               |
+| MINIAOD  | 100 MB              |
+| NANOAOD  | 50 MB               |
 
 After each step is completed, the files that are not needed get deleted. For example, once the DIGI2Raw step is completed, the GEN steps root files can be deleted and so on.
 

@@ -3,8 +3,6 @@ title = "Get Started"
 weight = 10
 +++
 
-<!-- To-do: remove all in progress mentions of web elements-->
-
 
 {{<callout type="warning" title="Prerequisites">}}
 In this tutorial we assume you are using a Linux shell, either on native Linux, Unix terminal or on Windows by using the WSL2
@@ -94,6 +92,7 @@ Clone the GitHub repository for this workflow:
 
 ```bash
 git clone https://github.com/cms-opendata-processing-tasks/FullSimulationArgoWorkflow.git
+cd FullSimulationArgoWorkflow
 ```
 The directory, in which you copied the Git repository, is called the working directory from now on.
 
@@ -293,7 +292,7 @@ Implement the plan by running
 terraform apply
 ```
 
-The creating of the cluster can take a while, up to an hour sometimes.
+The creating of the cluster can take a while, but the terminal window, where the `terraform apply` is running, should remain open for the entire process. Otherwise the process might get corrupted.
 
 Once it's done, extract your cluster's kubeconfig file to the working directory:
 ```bash
@@ -329,5 +328,7 @@ This might take some time, but in the meanwhile, you can order an instance pool.
 
 
 ### The cluster order can take a while
+
+Once the cluster is ordered, it can take a long time, anywhere from 20 minutes up to 2 hours, for it to be available. 
 
 While waiting you can proceed to the [Introduction]({{< relref "/episodes/01-introduction" >}}) and the setting up will continue after that.
