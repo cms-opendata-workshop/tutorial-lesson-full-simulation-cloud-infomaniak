@@ -129,7 +129,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
     parent = "resources"
     pageRef = "/external-links"
     weight = 25
-      [[menus.main]]
+  [[menus.main]]
     name = "Reference"
     parent = "resources"
     pageRef = "/reference"
